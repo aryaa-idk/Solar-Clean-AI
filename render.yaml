@@ -1,0 +1,28 @@
+# ================================================================
+# SolarClean AI — Render Blueprint (Infrastructure as Code)
+# ================================================================
+# Deploys the Python backend server as a Web Service.
+# The server serves BOTH:
+#   - REST API endpoints   (/api/*)
+#   - Static frontend      (dashboard/, served via SimpleHTTPRequestHandler)
+#
+# After pushing this file, import as a Blueprint on Render or
+# create a new Web Service from this repo — it will auto-detect
+# render.yaml and configure the service accordingly.
+# ================================================================
+services:
+  - type: web
+    name: solarclean-ai
+    runtime: docker
+    plan: free
+    region: oregon
+    branch: main
+    autoDeploy: true
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/config
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+      # PORT is automatically set by Render at runtime.
+      # Do NOT hardcode it here — the Python server reads $PORT.

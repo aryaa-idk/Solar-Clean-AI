@@ -21,8 +21,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Default configuration (overridable via docker run / compose env)
+# PORT is left unset here so Render can inject its own PORT at runtime.
+# The Python server defaults to 8085 when PORT is not provided (e.g. local Docker).
 ENV HOST=0.0.0.0 \
-    PORT=8085
+    PYTHONPATH=/app
 
 EXPOSE 8085
 
