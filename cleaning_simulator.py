@@ -26,7 +26,8 @@ def simulate_cleaning_strategies(
     wash_cost_usd=None,
     fixed_interval_days=45,
     eval_period_days=30,
-    daily_soiling_rate_pct=0.16
+    daily_soiling_rate_pct=0.16,
+    strategy=None
 ):
     """
     Simulates and compares the 3 cleaning strategies over eval_period_days.
@@ -169,6 +170,11 @@ def simulate_cleaning_strategies(
     strategies_ranked = sorted(strategies, key=lambda s: s["net_financial_benefit_usd"], reverse=True)
     best_strategy = strategies_ranked[0]
 
+    # Determine the user-selected strategy (defaults to optimal if none specified)
+    selected = next((s for s in strategies if s["strategy_id"] == strategy), best_strategy)
+    selected_strategy_id = selected["strategy_id"]
+    selected_strategy_name = selected["name"]
+
     if best_strategy["strategy_id"] == "B" and has_effective_rain:
         synthesis = (
             f"Strategy B (Wait for Forecast Rain) is the economically optimal decision. "
@@ -211,6 +217,8 @@ def simulate_cleaning_strategies(
         "ranked_strategies": [s["strategy_id"] for s in strategies_ranked],
         "optimal_strategy_id": best_strategy["strategy_id"],
         "optimal_strategy_name": best_strategy["name"],
+        "selected_strategy_id": selected_strategy_id,
+        "selected_strategy_name": selected_strategy_name,
         "synthesis": synthesis
     }
 

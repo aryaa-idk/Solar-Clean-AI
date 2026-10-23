@@ -294,6 +294,25 @@
           <input type="range" class="styled-range" id="cfg-clean-threshold" min="3.0" max="15.0" step="0.5" value="7.5">
           <span class="field-hint">Soiling loss level triggering manual cleaning</span>
         </div>
+
+        <div class="config-field">
+          <label for="cfg-strategy">
+            <span>Cleaning Strategy:</span>
+            <span class="cfg-display" id="disp-strategy">Strategy B</span>
+          </label>
+          <select class="styled-select" id="cfg-strategy">
+            <option value="A">Strategy A — Clean Today</option>
+            <option value="B" selected>Strategy B — Wait for Forecast Rain</option>
+            <option value="C">Strategy C — Fixed Schedule</option>
+          </select>
+          <span class="field-hint">Choose the cleaning method to evaluate</span>
+        </div>
+
+        <!-- Simulator API Error Banner -->
+        <div class="sim-error" id="sim-error-banner" style="display:none;">
+          <span class="sim-error-icon">⚠</span>
+          <span class="sim-error-msg" id="sim-error-msg">Unable to connect to the simulation server. Showing cached data.</span>
+        </div>
       </div>
 
       <!-- Strategy Comparison 3-Column Grid -->
@@ -301,7 +320,11 @@
         <!-- Strategy A Card -->
         <div class="strategy-card" id="card-strat-a">
           <div class="strat-header">
-            <span class="strat-badge">Strategy A</span>
+            <div class="strat-badge-wrap">
+              <span class="strat-badge">Strategy A</span>
+              <span class="badge-selected" id="strat-a-sel-tag">SELECTED</span>
+              <span class="badge-optimal" id="strat-a-opt-tag">OPTIMAL</span>
+            </div>
             <h4>Clean Today</h4>
           </div>
           <p class="strat-action">Immediate manual wash on Day 1</p>
@@ -327,10 +350,11 @@
         </div>
 
         <!-- Strategy B Card -->
-        <div class="strategy-card recommended" id="card-strat-b">
+        <div class="strategy-card" id="card-strat-b">
           <div class="strat-header">
             <div class="strat-badge-wrap">
               <span class="strat-badge">Strategy B</span>
+              <span class="badge-selected" id="strat-b-sel-tag">SELECTED</span>
               <span class="badge-optimal" id="strat-b-opt-tag">OPTIMAL</span>
             </div>
             <h4>Wait for Forecast Rain</h4>
@@ -364,7 +388,11 @@
         <!-- Strategy C Card -->
         <div class="strategy-card" id="card-strat-c">
           <div class="strat-header">
-            <span class="strat-badge">Strategy C</span>
+            <div class="strat-badge-wrap">
+              <span class="strat-badge">Strategy C</span>
+              <span class="badge-selected" id="strat-c-sel-tag">SELECTED</span>
+              <span class="badge-optimal" id="strat-c-opt-tag">OPTIMAL</span>
+            </div>
             <h4>Fixed Schedule</h4>
           </div>
           <p class="strat-action" id="strat-c-action">Clean every 45 days</p>
@@ -429,40 +457,39 @@
 
       <!-- Screening Metrics Grid -->
       <div class="analyzer-kpi-grid">
-        <div class="analyzer-kpi-card kpi-positive">
+        <div class="analyzer-kpi-card kpi-positive" data-type="derived" data-tooltip="Days classified as usable for soiling estimation after removing snow, low-insolation, and low-coverage days. Derived from daily screening of 305 recorded days.">
           <span class="kpi-label">Usable Baseline Days</span>
           <span class="kpi-value" id="scr-usable-days">255</span>
-          <span class="kpi-sub">83.6% of recorded days</span>
+          <span class="kpi-sub">83.6% of 305 recorded days</span>
+          <span class="data-type-badge">Derived</span>
         </div>
 
-        <div class="analyzer-kpi-card kpi-negative">
-          <span class="kpi-label">Potential Snow Inferred</span>
+        <div class="analyzer-kpi-card kpi-negative" data-type="inferred" data-tooltip="Days flagged as potentially snow-affected using an inference proxy: freezing precipitation (&ge;0.5 mm) with temperature at or below 2°C, OR significant insolation with near-zero AC generation under cold conditions. Direct snow depth was NOT measured.">
+          <span class="kpi-label">Potential Snow Days (Inferred)</span>
           <span class="kpi-value" id="scr-snow-days">41</span>
           <span class="kpi-sub">Proxy: freezing precip / zero-gen</span>
+          <span class="data-type-badge">Inferred</span>
         </div>
 
-        <div class="analyzer-kpi-card kpi-neutral">
+        <div class="analyzer-kpi-card kpi-neutral" data-type="observed" data-tooltip="1-minute observations excluded because POA irradiance was between 10 and 150 W/m&sup2; (twilight / sunrise-sunset). Observed from poa_irradiance__421 column.">
           <span class="kpi-label">Low Irradiance Filter</span>
           <span class="kpi-value" id="scr-low-irr-obs">47,064</span>
-          <span class="kpi-sub">POA &lt; 150 W/m&sup2; (twilight)</span>
+          <span class="kpi-sub">1-min observations, POA 10–150 W/m&sup2;</span>
+          <span class="data-type-badge">Observed</span>
         </div>
 
-        <div class="analyzer-kpi-card kpi-neutral">
+        <div class="analyzer-kpi-card kpi-neutral" data-type="observed" data-tooltip="1-minute useful-irradiance observations excluded because POA changed by more than 60 W/m&sup2; within one minute (cloud variability). Observed from 1-minute poa_irradiance__421 data.">
           <span class="kpi-label">Cloud Instability Filter</span>
           <span class="kpi-value" id="scr-cloud-obs">14,814</span>
-          <span class="kpi-sub">&Delta;POA &gt; 60 W/m&sup2;/min (1-min POA)</span>
+          <span class="kpi-sub">1-min observations, &Delta;POA &gt; 60 W/m&sup2;/min</span>
+          <span class="data-type-badge">Observed</span>
         </div>
 
-        <div class="analyzer-kpi-card kpi-positive">
-          <span class="kpi-label">Module Temperature</span>
-          <span class="kpi-value" id="scr-mod-temp">3 Sensors</span>
-          <span class="kpi-sub">99.0% direct sensor coverage</span>
-        </div>
-
-        <div class="analyzer-kpi-card kpi-positive">
-          <span class="kpi-label">Validation Error Gain</span>
-          <span class="kpi-value" id="scr-mae-gain">-0.146%</span>
-          <span class="kpi-sub">MAE reduced: 2.43% &rarr; 2.28%</span>
+        <div class="analyzer-kpi-card kpi-positive" data-type="observed" data-tooltip="Number of module temperature sensor columns present in the 1-minute dataset (module_temp_1__429, module_temp_2__430, module_temp_3__431). This counts data columns, not necessarily physical sensors. 99.0% is the share of all observations with at least one valid module-temperature reading.">
+          <span class="kpi-label">Module Temperature Channels</span>
+          <span class="kpi-value" id="scr-mod-temp">3 Channels</span>
+          <span class="kpi-sub">99.0% of obs. have valid reading</span>
+          <span class="data-type-badge">Observed</span>
         </div>
       </div>
     </section>

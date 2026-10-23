@@ -19,7 +19,8 @@ let activeConfig = {
   tariff: 0.15,
   capacity_kw: 3.0,
   fixed_interval: 45,
-  clean_threshold: 7.5
+  clean_threshold: 7.5,
+  strategy: 'B'
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -313,13 +314,12 @@ function renderScreeningStatus(data) {
   const elLowIrr = document.getElementById('scr-low-irr-obs');
   const elCloud = document.getElementById('scr-cloud-obs');
   const elModTemp = document.getElementById('scr-mod-temp');
-  const elGain = document.getElementById('scr-mae-gain');
 
   if (elUsable && d.usable_clean_days !== undefined) {
     elUsable.textContent = d.usable_clean_days;
   }
-  if (elSnow && d.snow_affected_days !== undefined) {
-    elSnow.textContent = d.snow_affected_days;
+  if (elSnow && d.potential_snow_inferred_days !== undefined) {
+    elSnow.textContent = d.potential_snow_inferred_days;
   }
   if (elLowIrr && hf.low_irradiance_excluded !== undefined) {
     elLowIrr.textContent = hf.low_irradiance_excluded.toLocaleString();
@@ -328,10 +328,7 @@ function renderScreeningStatus(data) {
     elCloud.textContent = hf.cloud_unstable_excluded.toLocaleString();
   }
   if (elModTemp && hf.module_temp_sensor_count !== undefined) {
-    elModTemp.textContent = `${hf.module_temp_sensor_count} Sensors`;
-  }
-  if (elGain) {
-    elGain.textContent = "-0.146%";
+    elModTemp.textContent = `${hf.module_temp_sensor_count} Channels`;
   }
 }
 
@@ -548,29 +545,59 @@ function renderSimulator(sim) {
     document.getElementById('strat-c-desc').textContent = c.description;
   }
 
-  // Highlight optimal strategy card
+  // Highlight optimal strategy card (recommended) and user-selected card
   const optId = sim.optimal_strategy_id;
+  const selId = sim.selected_strategy_id || optId;
   const cards = {
     'A': document.getElementById('card-strat-a'),
     'B': document.getElementById('card-strat-b'),
     'C': document.getElementById('card-strat-c')
   };
+  const selTags = {
+    'A': document.getElementById('strat-a-sel-tag'),
+    'B': document.getElementById('strat-b-sel-tag'),
+    'C': document.getElementById('strat-c-sel-tag')
+  };
+  const optTags = {
+    'A': document.getElementById('strat-a-opt-tag'),
+    'B': document.getElementById('strat-b-opt-tag'),
+    'C': document.getElementById('strat-c-opt-tag')
+  };
 
   Object.keys(cards).forEach(key => {
     if (cards[key]) {
+      // Optimal card styling + badge
       if (key === optId) {
         cards[key].classList.add('recommended');
       } else {
         cards[key].classList.remove('recommended');
       }
+      // User-selected card styling + badge
+      if (key === selId) {
+        cards[key].classList.add('selected');
+      } else {
+        cards[key].classList.remove('selected');
+      }
+      // Show/hide SELECTED badge
+      if (selTags[key]) {
+        selTags[key].style.display = (key === selId) ? 'inline-block' : 'none';
+      }
+      // Show/hide OPTIMAL badge
+      if (optTags[key]) {
+        optTags[key].style.display = (key === optId) ? 'inline-block' : 'none';
+      }
     }
   });
 
-  // Synthesis Box
+  // Synthesis Box — clearly distinguish selected vs optimal
   const titleEl = document.getElementById('synthesis-optimal-title');
   const textEl = document.getElementById('synthesis-optimal-text');
+  const badgeEl = document.querySelector('.synthesis-badge');
   if (titleEl) {
-    titleEl.textContent = `Selected Strategy: Strategy ${sim.optimal_strategy_id} — ${sim.optimal_strategy_name}`;
+    titleEl.textContent = `Selected Strategy: Strategy ${selId} — ${sim.selected_strategy_name || sim.optimal_strategy_name}`;
+  }
+  if (badgeEl) {
+    badgeEl.textContent = 'USER SELECTION';
   }
   if (textEl && sim.synthesis) {
     textEl.textContent = sim.synthesis;
@@ -583,12 +610,14 @@ function initConfigSliders() {
   const sCap = document.getElementById('cfg-capacity');
   const sInterval = document.getElementById('cfg-fixed-interval');
   const sThresh = document.getElementById('cfg-clean-threshold');
+  const sStrategy = document.getElementById('cfg-strategy');
 
   const dWash = document.getElementById('disp-wash-cost');
   const dTariff = document.getElementById('disp-tariff');
   const dCap = document.getElementById('disp-capacity');
   const dInterval = document.getElementById('disp-fixed-interval');
   const dThresh = document.getElementById('disp-clean-thresh');
+  const dStrategy = document.getElementById('disp-strategy');
 
   const btnReset = document.getElementById('btn-reset-simulator');
 
@@ -600,6 +629,10 @@ function initConfigSliders() {
     activeConfig.capacity_kw = parseFloat(sCap.value);
     activeConfig.fixed_interval = parseInt(sInterval.value, 10);
     activeConfig.clean_threshold = parseFloat(sThresh.value);
+    if (sStrategy) {
+      activeConfig.strategy = sStrategy.value;
+      dStrategy.textContent = `Strategy ${activeConfig.strategy}`;
+    }
 
     dWash.textContent = `$${activeConfig.wash_cost.toFixed(0)}`;
     dTariff.textContent = `$${activeConfig.tariff.toFixed(2)}`;
@@ -609,13 +642,17 @@ function initConfigSliders() {
 
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(async () => {
+      const simErrorBanner = document.getElementById('sim-error-banner');
+      const simErrorMsg = document.getElementById('sim-error-msg');
+
       // 1. Post to simulation endpoint
       try {
         const simPayload = {
           wash_cost_usd: activeConfig.wash_cost,
           tariff_usd: activeConfig.tariff,
           capacity_kw: activeConfig.capacity_kw,
-          fixed_interval_days: activeConfig.fixed_interval
+          fixed_interval_days: activeConfig.fixed_interval,
+          strategy: activeConfig.strategy
         };
 
         const res = await fetch('/api/simulate-strategies', {
@@ -626,9 +663,16 @@ function initConfigSliders() {
         if (res.ok) {
           const simData = await res.json();
           renderSimulator(simData);
+          if (simErrorBanner) simErrorBanner.style.display = 'none';
+        } else {
+          throw new Error(`Server returned ${res.status}`);
         }
       } catch (e) {
-        console.warn('Could not post to /api/simulate-strategies');
+        console.warn('Could not post to /api/simulate-strategies:', e);
+        if (simErrorBanner && simErrorMsg) {
+          simErrorMsg.textContent = 'Simulation request failed. Showing last cached data. Check server connection.';
+          simErrorBanner.style.display = 'flex';
+        }
       }
 
       // 2. Also update decision evaluation
@@ -659,8 +703,8 @@ function initConfigSliders() {
     }, 120);
   }
 
-  [sWash, sTariff, sCap, sInterval, sThresh].forEach(inp => {
-    if (inp) inp.addEventListener('input', handleConfigChange);
+  [sWash, sTariff, sCap, sInterval, sThresh, sStrategy].forEach(inp => {
+    if (inp) inp.addEventListener(sStrategy === inp ? 'change' : 'input', handleConfigChange);
   });
 
   if (btnReset) {
@@ -670,6 +714,11 @@ function initConfigSliders() {
       sCap.value = 3.0;
       sInterval.value = 45;
       sThresh.value = 7.5;
+      if (sStrategy) {
+        sStrategy.value = 'B';
+        dStrategy.textContent = 'Strategy B';
+      }
+      activeConfig.strategy = 'B';
       handleConfigChange();
     });
   }
@@ -871,6 +920,20 @@ function renderScreeningStatus(data) {
     cloudObsEl.textContent = hf.cloud_unstable_excluded.toLocaleString();
   }
   if (modTempEl && hf.module_temp_sensor_count !== undefined) {
-    modTempEl.textContent = `${hf.module_temp_sensor_count} Sensors`;
+    modTempEl.textContent = `${hf.module_temp_sensor_count} Channels`;
   }
 }
+
+// Apply tooltips to screening KPI cards
+const cards = document.querySelectorAll('.analyzer-kpi-card[data-tooltip]');
+cards.forEach(card => {
+  const tip = card.getAttribute('data-tooltip');
+  if (!tip) return;
+  const badge = document.createElement('span');
+  badge.className = 'kpi-tooltip';
+  badge.textContent = '\u24D8'; // circled question mark icon
+  badge.title = tip;
+  const label = card.querySelector('.kpi-label');
+  if (label) label.appendChild(document.createTextNode(' '));
+  if (label) label.appendChild(badge);
+});

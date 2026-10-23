@@ -746,6 +746,27 @@ body {
   cursor: pointer;
 }
 
+.styled-select {
+  width: 100%;
+  padding: 8px 10px;
+  background: #1E293B;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+}
+.styled-select option {
+  background: #1E293B;
+  color: var(--text-primary);
+}
+
 .field-hint {
   font-size: 0.68rem;
   color: var(--text-dim);
@@ -803,16 +824,40 @@ body {
   letter-spacing: 0.05em;
 }
 
-.badge-optimal {
-  display: inline-block;
+.badge-optimal,
+.badge-selected {
+  display: none;
   padding: 2px 8px;
   border-radius: var(--radius-full);
   font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.04em;
+}
+
+.badge-optimal {
   background: rgba(16, 185, 129, 0.2);
   color: #34D399;
   border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.badge-selected {
+  background: rgba(59, 130, 246, 0.2);
+  color: #60A5FA;
+  border: 1px solid rgba(59, 130, 246, 0.4);
+}
+
+.strategy-card.recommended .badge-optimal {
+  display: inline-block;
+}
+
+.strategy-card.selected .badge-selected {
+  display: inline-block;
+}
+
+.strategy-card.selected {
+  border: 2px solid rgba(59, 130, 246, 0.5);
+  background: rgba(59, 130, 246, 0.05);
+  box-shadow: 0 8px 24px -6px rgba(59, 130, 246, 0.2);
 }
 
 .strat-header h4 {
@@ -918,6 +963,29 @@ body {
   line-height: 1.5;
 }
 
+/* Simulator API Error Banner */
+.sim-error {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  border-radius: var(--radius-md);
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #FCA5A5;
+  font-size: 0.82rem;
+}
+
+.sim-error-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.sim-error-msg {
+  flex: 1;
+}
+
 /* 6. Restored Historical Chart */
 .chart-tab-group {
   display: inline-flex;
@@ -1009,4 +1077,72 @@ body {
   .analyzer-kpi-grid { grid-template-columns: repeat(2, 1fr); }
   .forecast-strip { grid-template-columns: repeat(2, 1fr); }
   .metrics-grid { grid-template-columns: 1fr; }
+}
+
+/* ==========================================================================
+   Screening KPI Tooltips & Data-Type Badges
+   ========================================================================== */
+.kpi-tooltip {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: var(--text-main);
+  font-size: 0.68rem;
+  line-height: 1;
+  text-align: center;
+  cursor: help;
+  margin-left: 6px;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+.kpi-tooltip:hover {
+  background: var(--accent-cyan);
+  border-color: var(--accent-cyan);
+}
+.kpi-tooltip:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-dark);
+  color: var(--text-main);
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-subtle);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  max-width: 340px;
+  z-index: 50;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.data-type-badge {
+  display: inline-block;
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: 4px;
+  padding: 2px 8px;
+  margin-top: 4px;
+}
+.analyzer-kpi-card[data-type="observed"] .data-type-badge {
+  background: rgba(6, 182, 212, 0.15);
+  color: #22d3ee;
+  border: 1px solid rgba(6, 182, 212, 0.35);
+}
+.analyzer-kpi-card[data-type="derived"] .data-type-badge {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+.analyzer-kpi-card[data-type="inferred"] .data-type-badge {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
 }

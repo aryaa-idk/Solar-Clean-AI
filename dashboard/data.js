@@ -1,6 +1,6 @@
 window.SOLARCLEAN_INITIAL_DATA = {
   "live_status": {
-    "timestamp": "2026-10-23T10:59:15.461690+00:00",
+    "timestamp": "2026-10-23T19:27:36.340975+00:00",
     "status": "ONLINE",
     "weather": {
       "location": {
@@ -14,13 +14,13 @@ window.SOLARCLEAN_INITIAL_DATA = {
         "timezone": "America/Denver"
       },
       "current": {
-        "time": "2026-10-23T04:45",
-        "temperature_c": 16.2,
-        "relative_humidity_pct": 36,
+        "time": "2026-10-23T13:15",
+        "temperature_c": 23.5,
+        "relative_humidity_pct": 19,
         "precipitation_mm": 0.0,
-        "wind_speed_kmh": 22.4,
-        "weather_code": 3,
-        "weather_desc": "Overcast"
+        "wind_speed_kmh": 23.2,
+        "weather_code": 0,
+        "weather_desc": "Clear sky"
       },
       "dry_streak": {
         "consecutive_dry_days": 8,
@@ -32,15 +32,15 @@ window.SOLARCLEAN_INITIAL_DATA = {
       },
       "forecast_horizons": {
         "rain_next_24h_mm": 0.0,
-        "rain_next_72h_mm": 3.2,
-        "max_rain_probability_72h_pct": 53
+        "rain_next_72h_mm": 2.4,
+        "max_rain_probability_72h_pct": 55
       },
       "daily_forecast": [
         {
           "date": "2026-10-23",
           "is_today": true,
-          "temp_max_c": 23.2,
-          "temp_min_c": 13.0,
+          "temp_max_c": 23.7,
+          "temp_min_c": 13.1,
           "precipitation_mm": 0.0,
           "rain_probability_pct": 28,
           "weather_code": 3,
@@ -49,221 +49,221 @@ window.SOLARCLEAN_INITIAL_DATA = {
         {
           "date": "2026-10-24",
           "is_today": false,
-          "temp_max_c": 13.0,
-          "temp_min_c": 3.8,
-          "precipitation_mm": 1.5,
-          "rain_probability_pct": 25,
-          "weather_code": 55,
-          "weather_desc": "Dense drizzle"
-        },
-        {
-          "date": "2026-10-25",
-          "is_today": false,
-          "temp_max_c": 13.5,
-          "temp_min_c": 7.1,
-          "precipitation_mm": 0.2,
-          "rain_probability_pct": 53,
-          "weather_code": 51,
-          "weather_desc": "Light drizzle"
-        },
-        {
-          "date": "2026-10-26",
-          "is_today": false,
-          "temp_max_c": 12.6,
-          "temp_min_c": 7.5,
-          "precipitation_mm": 1.5,
-          "rain_probability_pct": 53,
+          "temp_max_c": 13.1,
+          "temp_min_c": 4.1,
+          "precipitation_mm": 1.8,
+          "rain_probability_pct": 29,
           "weather_code": 53,
           "weather_desc": "Moderate drizzle"
         },
         {
+          "date": "2026-10-25",
+          "is_today": false,
+          "temp_max_c": 13.1,
+          "temp_min_c": 4.3,
+          "precipitation_mm": 0.0,
+          "rain_probability_pct": 55,
+          "weather_code": 45,
+          "weather_desc": "Fog"
+        },
+        {
+          "date": "2026-10-26",
+          "is_today": false,
+          "temp_max_c": 12.9,
+          "temp_min_c": 8.6,
+          "precipitation_mm": 0.6,
+          "rain_probability_pct": 55,
+          "weather_code": 51,
+          "weather_desc": "Light drizzle"
+        },
+        {
           "date": "2026-10-27",
           "is_today": false,
-          "temp_max_c": 15.6,
-          "temp_min_c": 7.5,
+          "temp_max_c": 16.3,
+          "temp_min_c": 8.2,
           "precipitation_mm": 0.0,
-          "rain_probability_pct": 5,
+          "rain_probability_pct": 7,
           "weather_code": 3,
           "weather_desc": "Overcast"
         },
         {
           "date": "2026-10-28",
           "is_today": false,
-          "temp_max_c": 16.4,
-          "temp_min_c": 8.8,
+          "temp_max_c": 16.9,
+          "temp_min_c": 8.5,
           "precipitation_mm": 0.0,
-          "rain_probability_pct": 3,
+          "rain_probability_pct": 2,
           "weather_code": 3,
           "weather_desc": "Overcast"
         },
         {
           "date": "2026-10-29",
           "is_today": false,
-          "temp_max_c": 10.2,
-          "temp_min_c": 3.4,
+          "temp_max_c": 13.8,
+          "temp_min_c": 8.5,
           "precipitation_mm": 0.0,
-          "rain_probability_pct": 4,
+          "rain_probability_pct": 3,
           "weather_code": 3,
           "weather_desc": "Overcast"
         }
       ],
       "hourly_next_24h": [
         {
-          "time": "2026-10-23T04:00",
-          "temp_c": 15.9,
-          "precipitation_mm": 0.0,
-          "probability_pct": 5
-        },
-        {
-          "time": "2026-10-23T05:00",
-          "temp_c": 16.3,
-          "precipitation_mm": 0.0,
-          "probability_pct": 4
-        },
-        {
-          "time": "2026-10-23T06:00",
-          "temp_c": 15.4,
-          "precipitation_mm": 0.0,
-          "probability_pct": 2
-        },
-        {
-          "time": "2026-10-23T07:00",
-          "temp_c": 13.9,
-          "precipitation_mm": 0.0,
-          "probability_pct": 0
-        },
-        {
-          "time": "2026-10-23T08:00",
-          "temp_c": 13.8,
-          "precipitation_mm": 0.0,
-          "probability_pct": 2
-        },
-        {
-          "time": "2026-10-23T09:00",
-          "temp_c": 16.0,
-          "precipitation_mm": 0.0,
-          "probability_pct": 4
-        },
-        {
-          "time": "2026-10-23T10:00",
-          "temp_c": 18.1,
-          "precipitation_mm": 0.0,
-          "probability_pct": 1
-        },
-        {
-          "time": "2026-10-23T11:00",
-          "temp_c": 20.4,
-          "precipitation_mm": 0.0,
-          "probability_pct": 0
-        },
-        {
-          "time": "2026-10-23T12:00",
-          "temp_c": 21.9,
-          "precipitation_mm": 0.0,
-          "probability_pct": 0
-        },
-        {
           "time": "2026-10-23T13:00",
-          "temp_c": 22.7,
+          "temp_c": 23.5,
           "precipitation_mm": 0.0,
           "probability_pct": 0
         },
         {
           "time": "2026-10-23T14:00",
-          "temp_c": 23.2,
+          "temp_c": 23.6,
           "precipitation_mm": 0.0,
           "probability_pct": 0
         },
         {
           "time": "2026-10-23T15:00",
-          "temp_c": 23.1,
+          "temp_c": 23.6,
           "precipitation_mm": 0.0,
           "probability_pct": 0
         },
         {
           "time": "2026-10-23T16:00",
-          "temp_c": 22.9,
+          "temp_c": 23.4,
           "precipitation_mm": 0.0,
-          "probability_pct": 1
+          "probability_pct": 0
         },
         {
           "time": "2026-10-23T17:00",
-          "temp_c": 22.1,
+          "temp_c": 22.4,
           "precipitation_mm": 0.0,
           "probability_pct": 1
         },
         {
           "time": "2026-10-23T18:00",
-          "temp_c": 19.9,
+          "temp_c": 20.4,
           "precipitation_mm": 0.0,
           "probability_pct": 1
         },
         {
           "time": "2026-10-23T19:00",
-          "temp_c": 18.4,
+          "temp_c": 18.6,
           "precipitation_mm": 0.0,
-          "probability_pct": 2
+          "probability_pct": 1
         },
         {
           "time": "2026-10-23T20:00",
-          "temp_c": 16.2,
+          "temp_c": 17.6,
           "precipitation_mm": 0.0,
-          "probability_pct": 2
+          "probability_pct": 1
         },
         {
           "time": "2026-10-23T21:00",
-          "temp_c": 15.2,
+          "temp_c": 16.0,
           "precipitation_mm": 0.0,
           "probability_pct": 1
         },
         {
           "time": "2026-10-23T22:00",
-          "temp_c": 15.0,
+          "temp_c": 14.5,
           "precipitation_mm": 0.0,
           "probability_pct": 1
         },
         {
           "time": "2026-10-23T23:00",
-          "temp_c": 14.0,
+          "temp_c": 13.8,
           "precipitation_mm": 0.0,
           "probability_pct": 1
         },
         {
           "time": "2026-10-24T00:00",
-          "temp_c": 13.0,
+          "temp_c": 13.1,
           "precipitation_mm": 0.0,
           "probability_pct": 1
         },
         {
           "time": "2026-10-24T01:00",
-          "temp_c": 11.4,
+          "temp_c": 12.3,
           "precipitation_mm": 0.0,
-          "probability_pct": 2
+          "probability_pct": 1
         },
         {
           "time": "2026-10-24T02:00",
           "temp_c": 11.3,
           "precipitation_mm": 0.0,
-          "probability_pct": 2
+          "probability_pct": 1
         },
         {
           "time": "2026-10-24T03:00",
-          "temp_c": 11.1,
+          "temp_c": 11.4,
           "precipitation_mm": 0.0,
           "probability_pct": 1
+        },
+        {
+          "time": "2026-10-24T04:00",
+          "temp_c": 11.8,
+          "precipitation_mm": 0.0,
+          "probability_pct": 3
+        },
+        {
+          "time": "2026-10-24T05:00",
+          "temp_c": 11.2,
+          "precipitation_mm": 0.0,
+          "probability_pct": 4
+        },
+        {
+          "time": "2026-10-24T06:00",
+          "temp_c": 10.3,
+          "precipitation_mm": 0.0,
+          "probability_pct": 4
+        },
+        {
+          "time": "2026-10-24T07:00",
+          "temp_c": 8.3,
+          "precipitation_mm": 0.0,
+          "probability_pct": 6
+        },
+        {
+          "time": "2026-10-24T08:00",
+          "temp_c": 8.4,
+          "precipitation_mm": 0.0,
+          "probability_pct": 5
+        },
+        {
+          "time": "2026-10-24T09:00",
+          "temp_c": 10.0,
+          "precipitation_mm": 0.0,
+          "probability_pct": 5
+        },
+        {
+          "time": "2026-10-24T10:00",
+          "temp_c": 9.6,
+          "precipitation_mm": 0.0,
+          "probability_pct": 7
+        },
+        {
+          "time": "2026-10-24T11:00",
+          "temp_c": 9.2,
+          "precipitation_mm": 0.0,
+          "probability_pct": 6
+        },
+        {
+          "time": "2026-10-24T12:00",
+          "temp_c": 9.3,
+          "precipitation_mm": 0.0,
+          "probability_pct": 5
         }
       ],
-      "cached_timestamp": 1792753154.5935287,
-      "fetched_at_utc": "2026-10-23T10:59:15.461690+00:00",
+      "cached_timestamp": 1792783655.4660518,
+      "fetched_at_utc": "2026-10-23T19:27:36.340975+00:00",
       "data_source": "LIVE_CACHE",
       "is_stale": false,
       "status": "ONLINE"
     },
     "recommendation": {
-      "recommendation": "WAIT FOR RAIN",
-      "status_color": "cyan",
-      "action_title": "Natural Cleaning Forecast Within 72h",
-      "reason": "Precipitation of 3.2 mm is forecast within the next 72 hours (53% probability). Because estimated soiling loss is currently 1.7% (below critical threshold), natural rain wash-off is expected to rinse panels without manual expenditure ($150).",
+      "recommendation": "MONITOR",
+      "status_color": "emerald",
+      "action_title": "Optimal Performance",
+      "reason": "Estimated soiling loss is low (1.7%), and panels are operating near 98.3% efficiency. Revenue impact is negligible ($0.03/day). No cleaning action required.",
       "data_confidence": "high",
       "uncertainty_note": "Weather-aware screening reduces the influence of selected confounding conditions but cannot completely distinguish soiling from clouds, snow, shading, equipment faults, or model error. Direct soiling measurements are not available.",
       "weather_status": "ONLINE",
@@ -275,7 +275,7 @@ window.SOLARCLEAN_INITIAL_DATA = {
           "tariff_usd_kwh": 0.15,
           "manual_wash_cost_usd": 150.0,
           "current_soiling_loss_pct": 1.68,
-          "forecast_rain_mm": 3.2,
+          "forecast_rain_mm": 2.4,
           "fixed_interval_days": 45,
           "daily_soiling_rate_pct": 0.16,
           "total_clean_production_kwh": 378.0,
@@ -301,16 +301,16 @@ window.SOLARCLEAN_INITIAL_DATA = {
           "strategy_b": {
             "strategy_id": "B",
             "name": "Wait for Forecast Rain",
-            "action": "Natural Wash (3.2 mm rain expected Day 2)",
+            "action": "Natural Wash (2.4 mm rain expected Day 2)",
             "cleaning_cost_usd": 0.0,
-            "energy_loss_kwh": 10.22,
-            "recoverable_energy_kwh": 4.9,
-            "gross_savings_usd": 0.73,
-            "net_financial_benefit_usd": 0.73,
-            "ending_soiling_loss_pct": 4.92,
-            "forecast_rain_mm": 3.2,
-            "has_effective_rain": true,
-            "description": "Zero cleaning cost. Free natural wash-off (3.2 mm forecast) restores panel efficiency, saving $150 in manual wash fees with net benefit of +$0.73."
+            "energy_loss_kwh": 15.72,
+            "recoverable_energy_kwh": 0.0,
+            "gross_savings_usd": 0.0,
+            "net_financial_benefit_usd": 0.0,
+            "ending_soiling_loss_pct": 6.48,
+            "forecast_rain_mm": 2.4,
+            "has_effective_rain": false,
+            "description": "Rain forecast (2.4 mm) is insufficient for full natural wash. Soiling continues accumulating with net benefit of $0.00."
           },
           "strategy_c": {
             "strategy_id": "C",
@@ -333,21 +333,23 @@ window.SOLARCLEAN_INITIAL_DATA = {
         ],
         "optimal_strategy_id": "B",
         "optimal_strategy_name": "Wait for Forecast Rain",
-        "synthesis": "Strategy B (Wait for Forecast Rain) is the economically optimal decision. Upcoming rainfall of 3.2 mm provides free natural wash-off, avoiding a $150 service fee while yielding higher net financial return."
+        "selected_strategy_id": "B",
+        "selected_strategy_name": "Wait for Forecast Rain",
+        "synthesis": "Strategy B (Wait for Forecast Rain) provides the highest net financial outcome ($+0.00) under current assumptions."
       },
       "metrics": {
         "estimated_soiling_ratio": 0.9832,
         "estimated_soiling_loss_pct": 1.68,
         "consecutive_dry_days": 8,
-        "rain_next_72h_mm": 3.2,
-        "rain_prob_72h_pct": 53,
-        "current_temp_c": 16.2,
-        "weather_condition": "Overcast",
+        "rain_next_72h_mm": 2.4,
+        "rain_prob_72h_pct": 55,
+        "current_temp_c": 23.5,
+        "weather_condition": "Clear sky",
         "last_rain_date": "2026-10-14",
         "soiling_est_breakdown": {
           "primary_loss_pct": 1.68,
           "empirical_loss_pct": 1.68,
-          "ml_model_loss_pct": 2.62,
+          "ml_model_loss_pct": 2.52,
           "soiling_ratio": 0.9832
         }
       },
@@ -434,7 +436,7 @@ window.SOLARCLEAN_INITIAL_DATA = {
           "total_recorded_days": 305,
           "usable_clean_days": 255,
           "potential_snow_inferred_days": 41,
-          "snow_affected_days": 41,
+          
           "low_insolation_days": 7,
           "low_coverage_days": 2,
           "usable_coverage_pct": 83.6,
@@ -4016,6 +4018,8 @@ window.SOLARCLEAN_INITIAL_DATA = {
     ],
     "optimal_strategy_id": "B",
     "optimal_strategy_name": "Wait for Forecast Rain",
+    "selected_strategy_id": "B",
+    "selected_strategy_name": "Wait for Forecast Rain",
     "synthesis": "Strategy B (Wait for Forecast Rain) is the economically optimal decision. Upcoming rainfall of 3.2 mm provides free natural wash-off, avoiding a $150 service fee while yielding higher net financial return."
   },
   "screening": {
@@ -4037,7 +4041,6 @@ window.SOLARCLEAN_INITIAL_DATA = {
       "total_recorded_days": 305,
       "usable_clean_days": 255,
       "potential_snow_inferred_days": 41,
-      "snow_affected_days": 41,
       "low_insolation_days": 7,
       "low_coverage_days": 2,
       "usable_coverage_pct": 83.6,

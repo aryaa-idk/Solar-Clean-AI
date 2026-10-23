@@ -149,6 +149,8 @@ def get_simulation_data(overrides=None):
                 args["current_loss_pct"] = float(overrides["current_loss_pct"])
             if "forecast_rain_mm" in overrides:
                 args["forecast_rain_mm"] = float(overrides["forecast_rain_mm"])
+            if "strategy" in overrides:
+                args["strategy"] = str(overrides["strategy"])
         return simulate_cleaning_strategies(**args)
     except Exception as e:
         return {"error": str(e)}
