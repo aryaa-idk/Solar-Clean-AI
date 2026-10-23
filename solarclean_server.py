@@ -8,14 +8,15 @@ Integrates live Open-Meteo weather, the trained soiling models, and central conf
 import os
 import json
 import urllib.parse
-from http.server import HTTPServer, SimpleHTTPRequestHandler
+from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 import pandas as pd
 
 import solarclean_config as cfg
 from live_weather_service import fetch_live_weather
 from recommendation_engine import evaluate_cleaning_decision
 
-PORT = 8085
+PORT = int(os.environ.get("PORT", 8085))
+HOST = os.environ.get("HOST", "0.0.0.0")
 DASHBOARD_DIR = cfg.DASHBOARD_DIR
 
 class SolarCleanHandler(SimpleHTTPRequestHandler):
@@ -244,9 +245,17 @@ def export_static_dashboard_bundle():
     print(f"Static fallback bundle written to {out_file}")
 
 if __name__ == "__main__":
-    export_static_dashboard_bundle()
-    server = HTTPServer(('127.0.0.1', PORT), SolarCleanHandler)
-    print(f"SolarClean AI Server listening on http://127.0.0.1:{PORT}")
+    # Pre-export the static dashboard bundle for offline/direct file access.
+    # This calls the live weather API; wrap in try/except so the server
+    # still starts if the network is unavailable (the API endpoints
+    # will return error status when fetched at runtime).
+    try:
+        export_static_dashboard_bundle()
+    except Exception as e:
+        print(f"[Server] Static bundle export skipped: {e}")
+
+    server = ThreadingHTTPServer((HOST, PORT), SolarCleanHandler)
+    print(f"SolarClean AI Server listening on http://{HOST}:{PORT}")
     try:
         server.serve_forever()
     except KeyboardInterrupt:

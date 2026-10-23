@@ -1,0 +1,19 @@
+# ================================================================
+# SolarClean AI — Docker Compose Orchestration
+# ================================================================
+# Backend + Frontend are served by a single Python process.
+# Usage:
+#   docker-compose up --build -d          # start
+#   docker-compose logs -f                # follow logs
+#   docker-compose down                   # stop
+# ================================================================
+services:
+  solarclean:
+    build: .
+    container_name: solarclean-ai
+    ports:
+      - "${PORT:-8085}:8085"           # host:container — change PORT env to remap
+    environment:
+      - HOST=${HOST:-0.0.0.0}
+      - PORT=8085
+    restart: unless-stopped

@@ -1,0 +1,36 @@
+.git
+.gitignore
+.dockerignore
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.venv
+venv
+.venv/
+
+# Build artifacts
+build/
+*.egg-info
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.vscode
+.idea
+
+# Large raw data & utility files not needed at runtime
+# (server reads processed data from output/ only)
+*.pdf
+pv_system10_2022.csv
+weather_2022.csv
+solarclean_merged_2022.csv
+
+# Dev-only scripts (training, tests, PDF extraction)
+train_soiling_model.py
+test_pipeline.py
+read_pdf.py
