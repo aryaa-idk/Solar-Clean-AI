@@ -1,0 +1,306 @@
+date,recommendation,reason,estimated_loss_pct,consecutive_dry_days,confidence
+2022-01-01,no_action,,,0,low
+2022-01-02,no_action,,0.0,1,low
+2022-01-03,no_action,,0.0,2,low
+2022-01-04,no_action,,0.0,3,low
+2022-01-05,no_action,,0.0,0,low
+2022-01-06,no_action,,0.0,0,low
+2022-01-07,no_action,,0.0,1,low
+2022-01-08,no_action,,0.0,2,low
+2022-01-09,no_action,,0.0,3,low
+2022-01-10,no_action,,0.0,4,low
+2022-01-11,no_action,,0.0,5,low
+2022-01-12,no_action,,0.0,6,low
+2022-01-13,no_action,,0.0,7,low
+2022-01-14,no_action,,0.0,0,low
+2022-01-15,no_action,,0.0,1,low
+2022-01-16,no_action,,0.0,2,low
+2022-01-17,no_action,,0.0,3,low
+2022-01-18,no_action,,0.0,4,low
+2022-01-19,no_action,,0.0,0,low
+2022-01-20,no_action,,0.0,1,low
+2022-01-21,no_action,,0.0,0,low
+2022-01-22,cleaning_detected,Performance recovery detected (candidate cleaning event),0.0,1,medium
+2022-01-23,no_action,,0.0,2,low
+2022-01-24,no_action,,0.0,3,low
+2022-01-25,no_action,,0.0,0,low
+2022-01-26,no_action,,0.0,1,low
+2022-01-27,no_action,,0.0,0,low
+2022-01-28,no_action,,0.0,1,low
+2022-01-29,cleaning_detected,Performance recovery detected (candidate cleaning event),0.0,2,medium
+2022-01-30,no_action,,0.0,3,low
+2022-02-01,cleaning_detected,Performance recovery detected (candidate cleaning event),0.0,0,medium
+2022-02-02,no_action,,0.3775886715272403,0,low
+2022-02-03,no_action,,0.7551773430544917,1,low
+2022-02-04,no_action,,1.132766014581743,2,low
+2022-02-05,no_action,,1.5103546861089834,3,low
+2022-02-06,no_action,,1.8879433576362237,4,low
+2022-02-07,no_action,,2.265532029163464,5,low
+2022-02-08,no_action,,2.6431207006907154,6,low
+2022-02-09,monitor,Soiling loss 3.0% above threshold but rain may occur,3.0207093722179668,7,low
+2022-02-10,monitor,Soiling loss 3.4% above threshold but rain may occur,3.398298043745207,8,low
+2022-02-11,monitor,Soiling loss 3.8% above threshold but rain may occur,3.7758867152724473,0,low
+2022-02-12,monitor,Soiling loss 4.2% above threshold but rain may occur,4.15347538679971,1,low
+2022-02-13,monitor,Soiling loss 4.5% above threshold but rain may occur,4.531064058326939,2,low
+2022-02-14,monitor,Soiling loss 4.9% above threshold but rain may occur,4.90865272985419,3,low
+2022-02-15,monitor,Soiling loss 5.3% above threshold but rain may occur,5.286241401381431,4,low
+2022-02-16,monitor,Soiling loss 5.7% above threshold but rain may occur,5.663830072908683,0,low
+2022-02-17,monitor,Soiling loss 6.0% above threshold but rain may occur,6.0414187444359335,1,low
+2022-02-18,monitor,Soiling loss 6.4% above threshold but rain may occur,6.419007415963174,2,low
+2022-02-19,monitor,Soiling loss 6.8% above threshold but rain may occur,6.796596087490414,3,low
+2022-02-20,monitor,Soiling loss 7.2% above threshold but rain may occur,7.174184759017665,4,low
+2022-02-21,monitor,Soiling loss 7.6% above threshold but rain may occur,7.551773430544917,5,low
+2022-02-22,monitor,Soiling loss 7.9% above threshold but rain may occur,7.929362102072157,0,low
+2022-02-23,monitor,Soiling loss 8.3% above threshold but rain may occur,8.306950773599397,0,low
+2022-02-24,cleaning_detected,Performance recovery detected (candidate cleaning event),4.318842132780265,1,medium
+2022-02-25,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,2,low
+2022-02-26,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,3,low
+2022-02-27,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,4,low
+2022-02-28,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,5,low
+2022-03-01,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,6,low
+2022-03-02,cleaning_detected,Performance recovery detected (candidate cleaning event),4.318842132780265,7,medium
+2022-03-03,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,8,low
+2022-03-04,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,9,low
+2022-03-05,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,0,low
+2022-03-06,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,0,low
+2022-03-07,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,1,low
+2022-03-08,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,2,low
+2022-03-09,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,0,low
+2022-03-10,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,1,low
+2022-03-11,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,2,low
+2022-03-12,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,3,low
+2022-03-13,cleaning_detected,Performance recovery detected (candidate cleaning event),4.318842132780265,4,medium
+2022-03-14,cleaning_detected,Performance recovery detected (candidate cleaning event),4.318842132780265,5,medium
+2022-03-15,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,6,low
+2022-03-16,cleaning_detected,Performance recovery detected (candidate cleaning event),4.318842132780265,0,medium
+2022-03-17,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,0,low
+2022-03-18,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,1,low
+2022-03-19,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,2,low
+2022-03-20,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,3,low
+2022-03-21,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,0,low
+2022-03-22,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,1,low
+2022-03-23,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,2,low
+2022-03-24,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,3,low
+2022-03-25,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,4,low
+2022-03-26,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,5,low
+2022-03-27,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,6,low
+2022-03-28,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,7,low
+2022-03-29,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,0,low
+2022-03-30,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,1,low
+2022-03-31,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,2,low
+2022-04-01,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,3,low
+2022-04-02,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,4,low
+2022-04-03,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,5,low
+2022-04-04,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,6,low
+2022-04-05,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,0,low
+2022-04-06,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,1,low
+2022-04-07,cleaning_detected,Performance recovery detected (candidate cleaning event),4.318842132780265,2,medium
+2022-04-08,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,3,low
+2022-04-09,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,4,low
+2022-04-10,monitor,Soiling loss 4.3% above threshold but rain may occur,4.318842132780265,0,low
+2022-04-11,cleaning_detected,Performance recovery detected (candidate cleaning event),1.4356842405604642,1,medium
+2022-04-12,no_action,,1.4770907904799069,0,low
+2022-04-13,no_action,,1.5218467656209378,1,low
+2022-04-14,no_action,,1.581687093577111,2,low
+2022-04-15,no_action,,1.6437520290874308,0,low
+2022-04-16,no_action,,1.6895583129749925,1,low
+2022-04-17,no_action,,1.747383504745914,2,low
+2022-04-18,no_action,,1.7920002948932146,3,low
+2022-04-19,no_action,,1.834693767010398,4,low
+2022-04-20,no_action,,1.8770642672849114,5,low
+2022-04-21,no_action,,1.9339811277857,6,low
+2022-04-22,no_action,,2.00427276367674,7,low
+2022-04-23,no_action,,2.0493395601161035,8,low
+2022-04-24,no_action,,2.086607956730968,0,low
+2022-04-25,no_action,,2.1365160981241194,0,low
+2022-04-26,no_action,,2.2075842147831315,1,low
+2022-04-27,no_action,,2.262423821742554,2,low
+2022-04-28,no_action,,2.309958418469049,3,low
+2022-04-29,no_action,,2.365196626900423,4,low
+2022-04-30,no_action,,2.4016740656148228,5,low
+2022-05-01,no_action,,2.4568078996098475,0,low
+2022-05-02,no_action,,2.5234465756524216,0,low
+2022-05-03,no_action,,2.5565284631923313,0,low
+2022-05-04,no_action,,2.596682570497344,0,low
+2022-05-05,no_action,,2.6466867457571985,1,low
+2022-05-06,no_action,,2.7024098276823394,2,low
+2022-05-07,no_action,,2.7539701080997014,3,low
+2022-05-08,no_action,,2.7918009068581773,4,low
+2022-05-09,no_action,,2.8479020999812032,5,low
+2022-05-10,no_action,,2.8991619964570003,6,low
+2022-05-11,no_action,,2.9407696681466033,7,low
+2022-05-12,monitor,Soiling loss 3.0% above threshold but rain may occur,3.0094164821997893,8,low
+2022-05-13,monitor,Soiling loss 3.1% above threshold but rain may occur,3.0684643504204523,9,low
+2022-05-14,monitor,Soiling loss 3.1% above threshold but rain may occur,3.1446382353347513,10,low
+2022-05-15,monitor,Soiling loss 3.2% above threshold but rain may occur,3.2002623958477083,11,low
+2022-05-16,cleaning_detected,Performance recovery detected (candidate cleaning event),1.6794015128056894,12,medium
+2022-05-17,no_action,,1.6794015128056894,13,low
+2022-05-20,no_action,,1.6794015128056894,0,low
+2022-05-21,no_action,,1.6794015128056894,0,low
+2022-05-22,no_action,,1.6794015128056894,1,low
+2022-05-23,no_action,,1.6794015128056894,2,low
+2022-05-31,no_action,,1.6794015128056894,0,low
+2022-06-01,no_action,,1.6794015128056894,0,low
+2022-07-20,no_action,,1.6794015128056894,0,low
+2022-07-21,cleaning_detected,Performance recovery detected (candidate cleaning event),1.6794015128056894,1,medium
+2022-07-24,no_action,,1.6794015128056894,0,low
+2022-07-25,no_action,,1.6794015128056894,1,low
+2022-07-26,no_action,,1.6794015128056894,0,low
+2022-07-27,no_action,,1.6794015128056894,1,low
+2022-07-28,no_action,,1.6794015128056894,0,low
+2022-07-29,no_action,,1.6794015128056894,1,low
+2022-07-30,no_action,,1.6794015128056894,2,low
+2022-07-31,no_action,,1.6794015128056894,0,low
+2022-08-01,no_action,,1.6794015128056894,1,low
+2022-08-02,no_action,,1.6794015128056894,2,low
+2022-08-03,no_action,,1.6794015128056894,3,low
+2022-08-04,no_action,,1.6794015128056894,4,low
+2022-08-05,no_action,,1.6794015128056894,0,low
+2022-08-06,no_action,,1.6794015128056894,1,low
+2022-08-07,no_action,,1.6794015128056894,0,low
+2022-08-08,no_action,,1.6794015128056894,1,low
+2022-08-09,no_action,,1.6794015128056894,2,low
+2022-08-10,no_action,,1.6794015128056894,3,low
+2022-08-11,no_action,,1.6794015128056894,4,low
+2022-08-12,no_action,,1.6794015128056894,5,low
+2022-08-13,no_action,,1.6794015128056894,6,low
+2022-08-14,no_action,,1.6794015128056894,0,low
+2022-08-15,no_action,,1.6794015128056894,0,low
+2022-08-16,no_action,,1.6794015128056894,0,low
+2022-08-17,no_action,,1.6794015128056894,1,low
+2022-08-18,no_action,,1.6794015128056894,2,low
+2022-08-19,no_action,,1.6794015128056894,3,low
+2022-08-20,no_action,,1.6794015128056894,0,low
+2022-08-21,cleaning_detected,Performance recovery detected (candidate cleaning event),1.6794015128056894,1,medium
+2022-08-22,no_action,,1.6794015128056894,2,low
+2022-08-23,no_action,,1.6794015128056894,3,low
+2022-08-24,no_action,,1.6794015128056894,4,low
+2022-08-25,no_action,,1.6794015128056894,0,low
+2022-08-26,no_action,,1.6794015128056894,1,low
+2022-08-27,no_action,,1.6794015128056894,2,low
+2022-08-28,no_action,,1.6794015128056894,3,low
+2022-08-29,no_action,,1.6794015128056894,4,low
+2022-08-30,no_action,,1.6794015128056894,5,low
+2022-08-31,no_action,,1.6794015128056894,6,low
+2022-09-01,no_action,,1.6794015128056894,7,low
+2022-09-02,no_action,,1.6794015128056894,8,low
+2022-09-03,no_action,,1.6794015128056894,9,low
+2022-09-04,no_action,,1.6794015128056894,10,low
+2022-09-05,no_action,,1.6794015128056894,11,low
+2022-09-06,no_action,,1.6794015128056894,12,low
+2022-09-07,no_action,,1.6794015128056894,13,low
+2022-09-08,no_action,,1.6794015128056894,14,low
+2022-09-09,no_action,,1.6794015128056894,0,low
+2022-09-10,no_action,,1.6794015128056894,0,low
+2022-09-11,no_action,,1.6794015128056894,1,low
+2022-09-12,no_action,,1.6794015128056894,2,low
+2022-09-13,no_action,,1.6794015128056894,3,low
+2022-09-14,no_action,,1.6794015128056894,0,low
+2022-09-15,no_action,,1.6794015128056894,1,low
+2022-09-16,no_action,,1.6794015128056894,0,low
+2022-09-17,no_action,,1.6794015128056894,1,low
+2022-09-18,no_action,,1.6794015128056894,2,low
+2022-09-19,no_action,,1.6794015128056894,3,low
+2022-09-20,no_action,,1.6794015128056894,4,low
+2022-09-21,cleaning_detected,Performance recovery detected (candidate cleaning event),1.6794015128056894,0,medium
+2022-09-22,cleaning_detected,Performance recovery detected (candidate cleaning event),1.6794015128056894,0,medium
+2022-09-23,no_action,,1.6794015128056894,1,low
+2022-09-24,cleaning_detected,Performance recovery detected (candidate cleaning event),1.6794015128056894,2,medium
+2022-09-25,cleaning_detected,Performance recovery detected (candidate cleaning event),1.6794015128056894,3,medium
+2022-09-26,no_action,,1.6794015128056894,4,low
+2022-09-27,no_action,,1.6794015128056894,5,low
+2022-09-28,no_action,,1.6794015128056894,6,low
+2022-09-29,cleaning_detected,Performance recovery detected (candidate cleaning event),1.6794015128056894,7,medium
+2022-09-30,no_action,,1.6794015128056894,0,low
+2022-10-01,no_action,,1.6794015128056894,0,low
+2022-10-02,no_action,,1.6794015128056894,0,low
+2022-10-03,no_action,,1.6794015128056894,0,low
+2022-10-04,no_action,,1.6794015128056894,1,low
+2022-10-05,no_action,,1.6794015128056894,2,low
+2022-10-06,cleaning_detected,Performance recovery detected (candidate cleaning event),1.6794015128056894,3,medium
+2022-10-07,no_action,,1.6794015128056894,4,low
+2022-10-08,no_action,,1.6794015128056894,5,low
+2022-10-09,no_action,,1.6794015128056894,6,low
+2022-10-10,no_action,,1.6794015128056894,7,low
+2022-10-11,no_action,,1.6794015128056894,8,low
+2022-10-12,no_action,,1.6794015128056894,9,low
+2022-10-13,no_action,,1.6794015128056894,10,low
+2022-10-14,no_action,,1.6794015128056894,11,low
+2022-10-15,no_action,,1.6794015128056894,12,low
+2022-10-16,no_action,,1.6794015128056894,13,low
+2022-10-17,no_action,,1.6794015128056894,14,low
+2022-10-18,no_action,,1.6794015128056894,15,low
+2022-10-19,no_action,,1.6794015128056894,16,low
+2022-10-20,no_action,,1.6794015128056894,17,low
+2022-10-21,no_action,,1.6794015128056894,18,low
+2022-10-22,no_action,,1.6794015128056894,19,low
+2022-10-23,no_action,,1.6794015128056894,0,low
+2022-10-24,no_action,,1.6794015128056894,1,low
+2022-10-25,no_action,,1.6794015128056894,2,low
+2022-10-26,no_action,,1.6794015128056894,3,low
+2022-10-27,no_action,,1.6794015128056894,0,low
+2022-10-28,no_action,,1.6794015128056894,1,low
+2022-10-29,no_action,,1.6794015128056894,2,low
+2022-10-30,no_action,,1.6794015128056894,3,low
+2022-10-31,no_action,,1.6794015128056894,4,low
+2022-11-01,no_action,,1.6794015128056894,5,low
+2022-11-02,no_action,,1.6794015128056894,6,low
+2022-11-03,cleaning_detected,Performance recovery detected (candidate cleaning event),1.6794015128056894,0,medium
+2022-11-04,no_action,,1.6794015128056894,1,low
+2022-11-05,no_action,,1.6794015128056894,2,low
+2022-11-06,no_action,,1.6794015128056894,3,low
+2022-11-07,no_action,,1.6794015128056894,4,low
+2022-11-08,no_action,,1.6794015128056894,5,low
+2022-11-09,no_action,,1.6794015128056894,6,low
+2022-11-10,cleaning_detected,Performance recovery detected (candidate cleaning event),1.6794015128056894,7,medium
+2022-11-11,no_action,,1.6794015128056894,8,low
+2022-11-12,no_action,,1.6794015128056894,9,low
+2022-11-13,no_action,,1.6794015128056894,10,low
+2022-11-14,no_action,,1.6794015128056894,0,low
+2022-11-15,no_action,,1.6794015128056894,0,low
+2022-11-16,no_action,,1.6794015128056894,1,low
+2022-11-17,no_action,,1.6794015128056894,0,low
+2022-11-18,no_action,,1.6794015128056894,0,low
+2022-11-19,no_action,,1.6794015128056894,1,low
+2022-11-20,no_action,,1.6794015128056894,2,low
+2022-11-21,no_action,,1.6794015128056894,3,low
+2022-11-22,no_action,,1.6794015128056894,4,low
+2022-11-23,no_action,,1.6794015128056894,5,low
+2022-11-24,no_action,,1.6794015128056894,6,low
+2022-11-25,cleaning_detected,Performance recovery detected (candidate cleaning event),1.6794015128056894,7,medium
+2022-11-26,no_action,,1.6794015128056894,8,low
+2022-11-27,no_action,,1.6794015128056894,9,low
+2022-11-28,no_action,,1.6794015128056894,10,low
+2022-11-29,no_action,,1.6794015128056894,0,low
+2022-11-30,no_action,,1.6794015128056894,1,low
+2022-12-01,cleaning_detected,Performance recovery detected (candidate cleaning event),0.27295224339760615,2,medium
+2022-12-02,no_action,,0.5088121199923412,3,low
+2022-12-03,no_action,,0.781850482911417,4,low
+2022-12-04,no_action,,1.0774163460690822,5,low
+2022-12-05,no_action,,1.324807697542374,6,low
+2022-12-06,no_action,,1.6140785665160973,7,low
+2022-12-07,no_action,,1.8522424304514895,8,low
+2022-12-08,no_action,,2.0602134716588116,9,low
+2022-12-09,no_action,,2.2642832658758216,10,low
+2022-12-10,no_action,,2.4816327526742343,11,low
+2022-12-11,no_action,,2.706847360614173,12,low
+2022-12-12,no_action,,2.8805415581699356,0,low
+2022-12-13,monitor,Soiling loss 3.1% above threshold but rain may occur,3.0899010553365747,0,low
+2022-12-14,monitor,Soiling loss 3.3% above threshold but rain may occur,3.2755788056702317,1,low
+2022-12-15,monitor,Soiling loss 3.5% above threshold but rain may occur,3.5156606647986477,2,low
+2022-12-16,monitor,Soiling loss 3.7% above threshold but rain may occur,3.7312111319957375,3,low
+2022-12-17,monitor,Soiling loss 3.9% above threshold but rain may occur,3.9348507428078605,4,low
+2022-12-18,monitor,Soiling loss 4.1% above threshold but rain may occur,4.129373760454092,5,low
+2022-12-19,monitor,Soiling loss 4.3% above threshold but rain may occur,4.336774052645631,6,low
+2022-12-20,cleaning_detected,Performance recovery detected (candidate cleaning event),0.7290503599887477,7,medium
+2022-12-21,no_action,,2.883353090841756,0,low
+2022-12-22,monitor,Soiling loss 4.9% above threshold but rain may occur,4.859074540578023,0,low
+2022-12-23,monitor,Soiling loss 6.8% above threshold but rain may occur,6.760512547374908,1,low
+2022-12-24,monitor,Soiling loss 8.5% above threshold but rain may occur,8.535682872015048,2,low
+2022-12-25,monitor,Soiling loss 10.3% above threshold but rain may occur,10.338542389592664,3,low
+2022-12-26,monitor,Soiling loss 12.3% above threshold but rain may occur,12.256353822099065,4,low
+2022-12-27,monitor,Soiling loss 14.1% above threshold but rain may occur,14.137019067858446,5,low
+2022-12-28,monitor,Soiling loss 15.8% above threshold but rain may occur,15.811920178784522,0,low
+2022-12-29,monitor,Soiling loss 17.5% above threshold but rain may occur,17.468496936400445,0,low
+2022-12-30,monitor,Soiling loss 19.1% above threshold but rain may occur,19.113226063497635,1,low
+2022-12-31,monitor,Soiling loss 20.7% above threshold but rain may occur,20.702984311758744,2,low

@@ -1,0 +1,121 @@
+{
+  "model_name": "SolarClean Weather-Aware Soiling Estimator",
+  "primary_method": "Screened Empirical Accumulation with Weather GBR",
+  "empirical_parameters": {
+    "daily_soiling_rate_pct": 0.16,
+    "rain_reset_threshold_mm": 2.0,
+    "test_mae_pct": 2.257,
+    "test_rmse_pct": 4.605
+  },
+  "machine_learning_gbr": {
+    "algorithm": "GradientBoostingRegressor",
+    "held_out_test_mae_pct": 2.284,
+    "held_out_test_rmse_pct": 4.179,
+    "held_out_test_r2": -0.136,
+    "training_r2": 0.72,
+    "features": [
+      "consecutive_dry_days",
+      "cum_insolation_since_rain",
+      "rain_last_3d",
+      "rain_last_7d",
+      "temp_ambient_avg",
+      "temp_module_avg"
+    ],
+    "feature_importances": {
+      "consecutive_dry_days": 0.0119,
+      "cum_insolation_since_rain": 0.0263,
+      "rain_last_3d": 0.1053,
+      "rain_last_7d": 0.4529,
+      "temp_ambient_avg": 0.2184,
+      "temp_module_avg": 0.1851
+    }
+  },
+  "validation_comparison_unscreened_vs_screened": {
+    "unscreened": {
+      "test_mae_pct": 2.429,
+      "test_rmse_pct": 4.565,
+      "test_r2": -0.159,
+      "train_days": 226,
+      "test_days": 76
+    },
+    "weather_screened": {
+      "test_mae_pct": 2.284,
+      "test_rmse_pct": 4.179,
+      "test_r2": -0.136,
+      "train_days": 189,
+      "test_days": 64
+    },
+    "mae_improvement_pct": 0.146,
+    "excluded_confounded_days": 50
+  },
+  "weather_screening_summary": {
+    "high_frequency": {
+      "total_observations": 523943,
+      "night_observations": 239356,
+      "low_irradiance_excluded": 47064,
+      "useful_irradiance_count": 149531,
+      "cloud_unstable_excluded": 14814,
+      "usable_observations": 132644,
+      "usable_pct_of_daytime": 46.6,
+      "module_temp_sensor_count": 3,
+      "module_temp_available_count": 518831,
+      "ambient_fallback_count": 5112,
+      "historical_poa_granularity": "1-minute recorded data (poa_irradiance__421)",
+      "future_forecast_granularity": "Hourly / daily Open-Meteo aggregated forecast (no sub-minute cloud prediction)"
+    },
+    "daily": {
+      "total_recorded_days": 305,
+      "usable_clean_days": 255,
+      "potential_snow_inferred_days": 41,
+      "snow_affected_days": 41,
+      "low_insolation_days": 7,
+      "low_coverage_days": 2,
+      "usable_coverage_pct": 83.6,
+      "module_temperature_direct_used": true,
+      "data_limitations": {
+        "no_optical_soiling_sensor": {
+          "status": "UNAVAILABLE",
+          "description": "PVDAQ System 10 has no optical soiling station. Soiling figures are model-estimated performance deviations, not confirmed dust accumulation."
+        },
+        "no_direct_snow_depth_measurement": {
+          "status": "UNAVAILABLE",
+          "description": "Weather data records precipitation_sum and temperatures but no snowfall depth. Flagged events are inferred proxies (freezing precip / zero-gen proxy) and may also reflect inverter trips or data dropouts."
+        },
+        "sub_daily_forecast_cloud_dynamics": {
+          "status": "LIMITED_TO_HOURLY",
+          "description": "Historical 1-minute POA data provides within-day variability analysis for historical records. Future forecasts use Open-Meteo hourly/daily feeds; sub-minute cloud prediction or ramp-rate forecasting is not supported."
+        }
+      },
+      "snow_indicator_method": "Inferred from freezing temperatures and daytime zero-generation proxy; direct snowfall depth was not measured",
+      "limitation_note": "Weather-aware screening reduces the influence of selected confounding conditions but cannot completely distinguish soiling from clouds, snow, shading, equipment faults, or model error. Direct soiling measurements are not available."
+    },
+    "screening_active": true,
+    "data_limitations": {
+      "no_optical_soiling_sensor": {
+        "status": "UNAVAILABLE",
+        "description": "PVDAQ System 10 has no optical soiling station. Soiling figures are model-estimated performance deviations, not confirmed dust accumulation."
+      },
+      "no_direct_snow_depth_measurement": {
+        "status": "UNAVAILABLE",
+        "description": "Weather data records precipitation_sum and temperatures but no snowfall depth. Flagged events are inferred proxies (freezing precip / zero-gen proxy) and may also reflect inverter trips or data dropouts."
+      },
+      "sub_daily_forecast_cloud_dynamics": {
+        "status": "LIMITED_TO_HOURLY",
+        "description": "Historical 1-minute POA data provides within-day variability analysis for historical records. Future forecasts use Open-Meteo hourly/daily feeds; sub-minute cloud prediction or ramp-rate forecasting is not supported."
+      }
+    },
+    "limitation_note": "Weather-aware screening reduces the influence of selected confounding conditions but cannot completely distinguish soiling from clouds, snow, shading, equipment faults, or model error. Direct soiling measurements are not available."
+  },
+  "data_limitations": {
+    "no_dedicated_optical_soiling_sensor": "PVDAQ System 10 does not have a reference optical soiling station or cleaned control panels. All soiling metrics are model-estimated performance deviations from a baseline, not confirmed dust accumulation.",
+    "lack_of_direct_snow_depth_measurement": "The weather dataset contains liquid precipitation and temperature but no direct snowfall depth or snow sensor. Snow events are inferred proxies based on freezing temperatures and daytime zero-generation signatures. Zero generation can also result from equipment faults, inverter trips, or data dropouts; snow is not claimed as conclusively detected.",
+    "sub_daily_cloud_dynamics_in_forecasts": "Historical 1-minute POA irradiance measurements allow within-day cloud variability analysis on recorded data. However, future weather forecasts from Open-Meteo provide daily/hourly resolution only; sub-minute cloud prediction, cloud-edge forecasting, or inverter ramp-rate forecasting is not claimed or supported."
+  },
+  "scientific_validation_notes": [
+    "1. No Dedicated Optical Soiling Sensor: Figures are model-estimated performance deviations, not confirmed dust.",
+    "2. Lack of Direct Snow Depth: Winter flags are inferred proxies (freezing precip / zero-gen proxy), not confirmed snow coverage.",
+    "3. Sub-Daily Cloud Dynamics: Historical 1-min POA is strictly separated from Open-Meteo hourly/daily forecast resolution.",
+    "Screening reduced held-out test MAE from 2.429% to 2.284%.",
+    "Weather-aware screening reduces the influence of selected confounding conditions but cannot completely distinguish soiling from clouds, snow, shading, equipment faults, or model error. Direct soiling measurements are not available."
+  ]
+}

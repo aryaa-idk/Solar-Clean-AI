@@ -1,0 +1,278 @@
+{
+  "timestamp": "2026-10-23T15:09:35.209428",
+  "system": "PVDAQ System 10, Colorado",
+  "year": 2022,
+  "findings": {
+    "Data Loading": [
+      "High-frequency PV data: 523,943 rows x 16 columns",
+      "  Date range: 2022-01-01 00:00:00 to 2022-12-31 23:59:00",
+      "Daily PV data: 364 rows x 15 columns",
+      "  Date range: 2022-01-01 to 2022-12-31",
+      "Weather data: 365 rows x 6 columns",
+      "  Date range: 2022-01-01 to 2022-12-31",
+      "Merged dataset: 365 rows x 21 columns"
+    ],
+    "HF Validation": [
+      "Duplicate timestamps: 0",
+      "Modal sampling interval: 0 days 00:01:00",
+      "Irregular intervals: 82 (0.02%)",
+      "Missing values per column:",
+      "  ac_power__423: 3",
+      "  ac_voltage__426: 24",
+      "  dc_pos_current__425: 1",
+      "  dc_pos_voltage__424: 8",
+      "  dc_power__422: 5",
+      "  inverter_temp__432: 5472",
+      "  module_temp_1__429: 5113",
+      "  module_temp_2__430: 5470",
+      "  module_temp_3__431: 5470",
+      "  poa_irradiance__421: 84242",
+      "Negative irradiance readings: 222157",
+      "  Mildly negative (>-5 W/m2, sensor offset): 204832",
+      "  Severely negative (<-5 W/m2): 17324",
+      "Irradiance > 1500 W/m2: 3750",
+      "Negative AC power readings: 287473 (54.9%)",
+      "Negative DC power readings: 144203 (27.5%)",
+      "AC power > 3500W: 0",
+      "DC power > 4000W: 0",
+      "ambient_temp__428: range [-25.4, 37.3] degC, out-of-range: 0",
+      "module_temp_1__429: range [-24.3, 67.2] degC, out-of-range: 0"
+    ],
+    "Daily PV Validation": [
+      "Expected dates: 365, Present: 364",
+      "Missing dates: 1",
+      "  Missing: ['2022-01-31']",
+      "Missing values in daily PV data:",
+      "  inverter_temp__432: 3",
+      "  module_temp_2__430: 3",
+      "  module_temp_3__431: 3",
+      "  poa_irradiance__421: 55",
+      "Daily irradiance stats: mean=226.9, min=-2657.9, max=4528.1",
+      "  IQR bounds: [-249.9, 745.3]",
+      "  Extreme high (>3*IQR): 3",
+      "  Extreme low (<3*IQR): 9",
+      "  Negative daily avg irradiance: 10",
+      "  Extreme irradiance values:",
+      "    2022-05-20: -1159.6 W/m2",
+      "    2022-05-21: -1978.9 W/m2",
+      "    2022-05-22: -506.7 W/m2",
+      "    2022-05-31: -2657.9 W/m2",
+      "    2022-06-01: -689.7 W/m2",
+      "    2022-07-21: -602.6 W/m2",
+      "    2022-07-22: -2422.6 W/m2",
+      "    2022-07-23: -1497.8 W/m2",
+      "    2022-07-24: -745.1 W/m2",
+      "Negative daily avg AC power: 8",
+      "Negative daily avg DC power: 5",
+      "  Negative AC on 2022-01-01: -1.70 W",
+      "  Negative AC on 2022-02-02: -1.72 W",
+      "  Negative AC on 2022-03-06: -1.77 W",
+      "  Negative AC on 2022-09-21: -0.15 W",
+      "  Negative AC on 2022-09-22: -0.16 W",
+      "  Negative AC on 2022-11-25: -73.83 W",
+      "  Negative AC on 2022-11-26: -74.03 W",
+      "  Negative AC on 2022-11-27: -73.93 W"
+    ],
+    "Weather Validation": [
+      "Missing values: 0",
+      "Precipitation: min=0.0, max=26.6",
+      "Rain days (>0 mm): 164",
+      "Significant rain days (>5 mm): 28"
+    ],
+    "Merged Validation": [
+      "Total rows: 365",
+      "Missing values in key columns:",
+      "  ac_current__427: 1",
+      "  ac_power__423: 1",
+      "  ac_voltage__426: 1",
+      "  ambient_temp__428: 1",
+      "  das_battery_voltage__434: 1",
+      "  das_temp__433: 1",
+      "  dc_pos_current__425: 1",
+      "  dc_pos_voltage__424: 1",
+      "  dc_power__422: 1",
+      "  inverter_temp__432: 4",
+      "  module_temp_1__429: 1",
+      "  module_temp_2__430: 4",
+      "  module_temp_3__431: 4",
+      "  poa_irradiance__421: 56",
+      "Date alignment mismatches (time vs date): 0",
+      "Confirmed missing irradiance in merged: 56",
+      "Weather has 365 dates, daily PV has 364 dates",
+      "Merged has 365 rows (matches weather = left join on weather)"
+    ],
+    "Validation Summary": [
+      "The data contains 523,943 high-frequency measurements at 1-minute intervals, 364 daily aggregated PV records (1 date missing), 365 weather records, and a merged dataset of 365 rows.",
+      "Key issues confirmed: 56 missing daily irradiance values, extreme irradiance readings (min=-2657.9, max=4528.1), 8 negative daily AC power averages."
+    ],
+    "Preprocessing": [
+      "Daytime observations (irradiance >= 50 W/m2): 180,122 of 523,943 (34.4%)",
+      "Clean daytime observations: 176,169",
+      "Clean daily dataset: 305 days",
+      "Merged clean daily data with weather: 305 rows"
+    ],
+    "Performance Index": [
+      "Baseline performance index: 0.2649",
+      "Normalized PI range: [-0.111, 1.197]",
+      "Normalized PI median: 0.977"
+    ],
+    "SRR Input": [
+      "Good-quality days for SRR: 283 of 305",
+      "Full daily range: 364 days, valid data: 281 (77.2%)",
+      "Date range: 2022-01-02 to 2022-12-31"
+    ],
+    "SRR Results": [
+      "P50 insolation-weighted soiling ratio: 0.9735",
+      "68.2% CI: [0.9544, 0.9857]",
+      "Estimated annual soiling loss: 2.65%",
+      "CI on loss: [1.43%, 4.56%]",
+      "soiling_info keys: ['exceedance_level', 'renormalizing_factor', 'stochastic_soiling_profiles', 'soiling_interval_summary', 'soiling_ratio_perfect_clean']",
+      "Renormalizing factor: 0.9811",
+      "Exceedance level: 0.9290662213434028",
+      "Number of Monte Carlo soiling profiles: 500",
+      "Number of soiling intervals detected: 25",
+      "Candidate cleaning events: 24"
+    ],
+    "Rainfall Analysis": [
+      "Rain days (>2mm): 54",
+      "Mean PI change on rain days: -0.2020",
+      "Mean PI change 1-3 days post-rain: 0.0982",
+      "Mean PI change on dry days: 0.0653",
+      "NOTE: Positive mean PI change after rain is consistent with natural cleaning, but does NOT prove it. Cloud effects and measurement noise dominate day-to-day changes."
+    ],
+    "Output": [
+      "Days with soiling estimates: 304",
+      "Cleaning event candidates flagged: 24"
+    ],
+    "Recommendations": [
+      "Cleaning recommendation summary:",
+      "  no_action: 205 days",
+      "  monitor: 76 days",
+      "  cleaning_detected: 24 days"
+    ],
+    "Cost Analysis": [
+      "Estimated annual soiling loss: 38.75 USD (at assumed $4.0/day revenue)",
+      "NOTE: This is a rough estimate based on assumed revenue. Actual economics depend on local electricity prices, feed-in tariffs, and system-specific factors.",
+      "NOTE: Cleaning cost of $150 is an assumption, not a measured value."
+    ]
+  },
+  "data_changes": [
+    {
+      "file": "high-frequency data",
+      "type": "Flag invalid irradiance",
+      "n_observations": "310149",
+      "reason": "Irradiance outside [0, 1500] W/m2 flagged as invalid",
+      "method": "Physical limits check"
+    },
+    {
+      "file": "high-frequency data",
+      "type": "Flag daytime negative DC power",
+      "n_observations": "203",
+      "reason": "DC power < -10W during sufficient irradiance flagged",
+      "method": "Physical impossibility during production hours"
+    },
+    {
+      "file": "daily clean dataset",
+      "type": "Flag low-data days",
+      "n_observations": "9",
+      "reason": "Days with < 4.0 hours of daytime data flagged",
+      "method": "Minimum data coverage requirement"
+    },
+    {
+      "file": "daily clean dataset",
+      "type": "Flag low-insolation days",
+      "n_observations": "8",
+      "reason": "Days with daily insolation < 500 Wh/m2 flagged",
+      "method": "Insufficient irradiance for reliable performance estimation"
+    },
+    {
+      "file": "daily clean dataset",
+      "type": "Flag PI outliers",
+      "n_observations": "15",
+      "reason": "Performance index outside [0.089, 1.630] flagged as outliers",
+      "method": "Statistical outlier detection (0.5x P5 to 1.5x P95)"
+    }
+  ],
+  "files_created": [
+    {
+      "path": "output\\data\\daily_clean_2022.csv",
+      "description": "Cleaned daily PV + weather dataset with performance indices"
+    },
+    {
+      "path": "output\\data\\soiling_estimation_2022.csv",
+      "description": "Soiling estimation results with cleaning event candidates"
+    },
+    {
+      "path": "output\\data\\cleaning_recommendations_2022.csv",
+      "description": "Cleaning recommendations based on soiling estimates"
+    },
+    {
+      "path": "output\\plots\\performance_overview_2022.png",
+      "description": "Multi-panel performance overview plot"
+    },
+    {
+      "path": "output\\plots\\cleaning_events_2022.png",
+      "description": "Cleaning events with precipitation overlay"
+    },
+    {
+      "path": "output\\plots\\monthly_summary_2022.png",
+      "description": "Monthly performance and precipitation summary"
+    },
+    {
+      "path": "output\\plots\\data_quality_2022.png",
+      "description": "Data quality overview"
+    },
+    {
+      "path": "output\\plots\\srr_monte_carlo_2022.png",
+      "description": "SRR Monte Carlo soiling profiles"
+    },
+    {
+      "path": "output\\plots\\srr_intervals_2022.png",
+      "description": "SRR soiling interval analysis"
+    }
+  ],
+  "srr_success": true,
+  "srr_results": {
+    "p50_soiling_ratio": 0.9734583066044142,
+    "confidence_interval": [
+      0.9543961303562299,
+      0.9856950267428081
+    ],
+    "n_cleaning_events": 24,
+    "cleaning_dates": [
+      "2022-01-22 00:00:00",
+      "2022-01-29 00:00:00",
+      "2022-02-01 00:00:00",
+      "2022-02-24 00:00:00",
+      "2022-03-02 00:00:00",
+      "2022-03-13 00:00:00",
+      "2022-03-14 00:00:00",
+      "2022-03-16 00:00:00",
+      "2022-04-07 00:00:00",
+      "2022-04-11 00:00:00",
+      "2022-05-16 00:00:00",
+      "2022-07-21 00:00:00",
+      "2022-08-21 00:00:00",
+      "2022-09-21 00:00:00",
+      "2022-09-22 00:00:00",
+      "2022-09-24 00:00:00",
+      "2022-09-25 00:00:00",
+      "2022-09-29 00:00:00",
+      "2022-10-06 00:00:00",
+      "2022-11-03 00:00:00",
+      "2022-11-10 00:00:00",
+      "2022-11-25 00:00:00",
+      "2022-12-01 00:00:00",
+      "2022-12-20 00:00:00"
+    ]
+  },
+  "limitations": [
+    "No independent soiling measurements available for validation",
+    "SRR estimates are model-derived, not measured ground truth",
+    "Performance changes may be caused by factors other than soiling",
+    "Temperature correction uses a simplified linear model",
+    "System capacity is approximate (3 kW assumed)",
+    "Cleaning cost and revenue parameters are assumptions",
+    "Precision, recall, and F1 cannot be validated without confirmed cleaning labels"
+  ]
+}

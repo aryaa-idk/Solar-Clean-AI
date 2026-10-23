@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SolarClean AI — Real-Time PV Cleaning Decision Support</title>
+  <meta name="description" content="Operational solar PV soiling estimation and cleaning decision support system based on NREL PVDAQ historical baseline and Open-Meteo live weather.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☀️</text></svg>">
+  <!-- Chart.js for reliable time-series & event rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <div class="app-shell">
+
+    <!-- Top Navigation Header -->
+    <header class="main-header" id="main-header">
+      <div class="header-brand">
+        <div class="brand-symbol">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+          </svg>
+        </div>
+        <div>
+          <h1>SolarClean AI</h1>
+          <p class="subtitle">Operational Cleaning Decision Support & Weather-Informed Advisory</p>
+        </div>
+      </div>
+
+      <div class="header-badges">
+        <div class="info-badge system-loc">
+          <span class="icon">📍</span>
+          <span>Golden, Colorado, USA</span>
+        </div>
+        <div class="info-badge" id="api-status-badge">
+          <span class="pulse-indicator online" id="api-pulse"></span>
+          <span id="api-status-text">Connecting to Live Weather...</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- 1. PROMINENT PV SYSTEM LOCATION & DATA PROVENANCE BANNER -->
+    <div class="location-banner" id="location-banner">
+      <div class="loc-badge">
+        <span class="loc-label">PV System Location:</span>
+        <span class="loc-val">Golden, Colorado, USA</span>
+      </div>
+      <div class="loc-divider">&bull;</div>
+      <div class="loc-badge">
+        <span class="loc-label">Historical Data Source:</span>
+        <span class="loc-val">NREL PVDAQ — System 10</span>
+      </div>
+      <div class="loc-divider">&bull;</div>
+      <div class="loc-badge">
+        <span class="loc-label">Historical Data Period:</span>
+        <span class="loc-val">2022</span>
+      </div>
+    </div>
+
+    <!-- 2. PRIMARY SMART CLEANING DECISION ENGINE CARD -->
+    <section class="card recommendation-hero" id="rec-hero-card">
+      <div class="hero-top">
+        <div class="hero-status-wrap">
+          <span class="rec-pill" id="rec-status-pill">EVALUATING</span>
+          <span class="hero-timestamp" id="rec-timestamp">Updated: Fetching...</span>
+        </div>
+        <div class="hero-action-group">
+          <button class="btn-primary" id="btn-analyze-recommend" title="Click to trigger real-time meteorological evaluation and recommendation logic">
+            <span class="btn-spinner" id="btn-spinner" style="display: none;"></span>
+            <span class="btn-icon" id="btn-icon">⚡</span>
+            <span class="btn-label" id="btn-label">Analyze & Recommend Cleaning</span>
+          </button>
+          <div class="confidence-tag" id="rec-confidence-tag">Telemetry: Live Meteo</div>
+        </div>
+      </div>
+
+      <div class="hero-body">
+        <h2 id="rec-action-title">Synthesizing Environmental Evidence...</h2>
+        <p class="hero-reason" id="rec-reason-text">Analyzing live meteorological conditions, precipitation forecast, and soiling accumulation rate...</p>
+      </div>
+
+      <!-- Real-Time Operational Metrics Strip -->
+      <div class="metrics-grid">
+        <div class="metric-cell">
+          <span class="metric-label">Estimated Soiling Ratio</span>
+          <span class="metric-val" id="val-soiling-ratio">—</span>
+          <span class="metric-sub" id="val-soiling-loss">Loss: —</span>
+        </div>
+
+        <div class="metric-cell">
+          <span class="metric-label">Actual Dry Streak</span>
+          <span class="metric-val" id="val-dry-streak">—</span>
+          <span class="metric-sub" id="val-last-rain">Last Rain: —</span>
+        </div>
+
+        <div class="metric-cell">
+          <span class="metric-label">72-Hour Rain Outlook</span>
+          <span class="metric-val" id="val-rain-outlook">—</span>
+          <span class="metric-sub" id="val-rain-prob">Probability: —</span>
+        </div>
+
+        <div class="metric-cell">
+          <span class="metric-label">Daily Revenue Impact</span>
+          <span class="metric-val" id="val-daily-revenue">—</span>
+          <span class="metric-sub" id="val-monthly-revenue">Monthly: —</span>
+        </div>
+      </div>
+
+      <!-- Exact Compact Operational Note -->
+      <div class="hero-disclosure" id="rec-disclosure-box">
+        <span class="disc-icon">ℹ️</span>
+        <span class="disc-text" id="rec-disclosure-text">
+          Weather-aware screening reduces the influence of selected confounding conditions but cannot completely distinguish soiling from clouds, snow, shading, equipment faults, or model error. Direct soiling measurements are not available.
+        </span>
+      </div>
+    </section>
+
+    <!-- 3. LIVE WEATHER & 7-DAY CLEANING HORIZON -->
+    <section class="card weather-outlook-section">
+      <div class="card-header">
+        <div>
+          <h3>Live Meteorology & 7-Day Cleaning Horizon</h3>
+          <p class="section-sub">Real-time Open-Meteo observations and forecast precipitation for Golden/Denver, Colorado (Lat 39.74°N, Lon 105.18°W)</p>
+        </div>
+        <div class="live-tag">
+          <span class="mini-pulse"></span>
+          <span>Open-Meteo Feed</span>
+        </div>
+      </div>
+
+      <div class="weather-content-grid">
+        <!-- Current Weather Snapshot -->
+        <div class="current-weather-box" id="current-weather-box">
+          <div class="curr-temp-row">
+            <span class="curr-temp" id="live-temp">—°C</span>
+            <span class="curr-desc" id="live-condition">—</span>
+          </div>
+          <div class="curr-details">
+            <div class="detail-item">
+              <span class="lbl">Humidity:</span>
+              <span class="val" id="live-humidity">—%</span>
+            </div>
+            <div class="detail-item">
+              <span class="lbl">Wind:</span>
+              <span class="val" id="live-wind">— km/h</span>
+            </div>
+            <div class="detail-item">
+              <span class="lbl">Current Rain:</span>
+              <span class="val" id="live-rain">— mm</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7-Day Forecast Cards Container -->
+        <div class="forecast-strip" id="forecast-strip">
+          <!-- Populated by JavaScript from Open-Meteo -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. RAINFALL EFFECTIVENESS ANALYZER -->
+    <section class="card rainfall-analyzer-section" id="rainfall-analyzer-section">
+      <div class="card-header">
+        <div>
+          <h3>Rainfall Effectiveness Analyzer</h3>
+          <p class="section-sub">Historical investigation of PV performance response across 41 discrete 2022 rainfall events (NREL PVDAQ System 10)</p>
+        </div>
+        <div class="badge-neutral">
+          <span>Historical Analysis</span>
+        </div>
+      </div>
+
+      <!-- Interpretation & Limitation Notice -->
+      <div class="analyzer-notice">
+        <span class="notice-icon">📊</span>
+        <span class="notice-text">
+          <strong>Interpretation Guide:</strong> "Historical performance changed following this rainfall event." Cloud variability, insolation differences, and ambient temperature affect day-to-day normalized yield; observed correlation does not prove complete dust removal.
+        </span>
+      </div>
+
+      <!-- Summary Statistics Strip -->
+      <div class="analyzer-kpi-grid">
+        <div class="analyzer-kpi-card">
+          <span class="kpi-label">Rain Events Identified</span>
+          <span class="kpi-value" id="ra-total-events">41</span>
+          <span class="kpi-sub">Precipitation &ge; 1.0 mm</span>
+        </div>
+        <div class="analyzer-kpi-card">
+          <span class="kpi-label">Comparable Events</span>
+          <span class="kpi-value" id="ra-comparable-events">40</span>
+          <span class="kpi-sub">1 Inconclusive (gap)</span>
+        </div>
+        <div class="analyzer-kpi-card kpi-positive">
+          <span class="kpi-label">Performance Increased</span>
+          <span class="kpi-value" id="ra-increased-events">15</span>
+          <span class="kpi-sub">37.5% of comparable events</span>
+        </div>
+        <div class="analyzer-kpi-card kpi-negative">
+          <span class="kpi-label">Performance Decreased</span>
+          <span class="kpi-value" id="ra-decreased-events">16</span>
+          <span class="kpi-sub">40.0% of comparable events</span>
+        </div>
+        <div class="analyzer-kpi-card kpi-neutral">
+          <span class="kpi-label">Neutral / Inconclusive</span>
+          <span class="kpi-value" id="ra-neutral-events">10</span>
+          <span class="kpi-sub">|&Delta;PI| &lt; 0.015 or gap</span>
+        </div>
+        <div class="analyzer-kpi-card">
+          <span class="kpi-label">Mean &Delta;PI Change</span>
+          <span class="kpi-value" id="ra-mean-pi">-0.002</span>
+          <span class="kpi-sub">Median: +0.002</span>
+        </div>
+      </div>
+
+      <!-- Event Comparison Chart Container -->
+      <div class="chart-wrapper-compact">
+        <canvas id="rainfallComparisonChart"></canvas>
+      </div>
+
+      <!-- Event Records Table -->
+      <div class="table-container">
+        <table class="event-table" id="rainfall-events-table">
+          <thead>
+            <tr>
+              <th>Event Date</th>
+              <th>Precipitation</th>
+              <th>Pre-Event PI</th>
+              <th>Post-Event PI</th>
+              <th>Performance Change (&Delta;PI)</th>
+              <th>Status / Classification</th>
+            </tr>
+          </thead>
+          <tbody id="rainfall-table-body">
+            <tr><td colspan="6" class="text-center">Loading historical rainfall event observations...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 5. WHAT-IF CLEANING SIMULATOR -->
+    <section class="card simulator-section" id="simulator-section">
+      <div class="card-header">
+        <div>
+          <h3>What-If Cleaning Simulator</h3>
+          <p class="section-sub">Compare 3 operational cleaning strategies over a consistent 30-day evaluation period under configurable assumptions</p>
+        </div>
+        <button class="btn-text-reset" id="btn-reset-simulator">Reset Defaults</button>
+      </div>
+
+      <!-- User-Configurable Assumptions Panel -->
+      <div class="config-controls-grid">
+        <div class="config-field">
+          <label for="cfg-wash-cost">
+            <span>Manual Cleaning Cost ($):</span>
+            <span class="cfg-display" id="disp-wash-cost">$150</span>
+          </label>
+          <input type="range" class="styled-range" id="cfg-wash-cost" min="30" max="350" step="10" value="150">
+          <span class="field-hint">Service fee charged per manual washing event</span>
+        </div>
+
+        <div class="config-field">
+          <label for="cfg-tariff">
+            <span>Electricity Price ($/kWh):</span>
+            <span class="cfg-display" id="disp-tariff">$0.15</span>
+          </label>
+          <input type="range" class="styled-range" id="cfg-tariff" min="0.05" max="0.45" step="0.01" value="0.15">
+          <span class="field-hint">Valuation of solar energy generated or lost</span>
+        </div>
+
+        <div class="config-field">
+          <label for="cfg-capacity">
+            <span>PV System Capacity:</span>
+            <span class="cfg-display" id="disp-capacity">3.0 kW</span>
+          </label>
+          <input type="range" class="styled-range" id="cfg-capacity" min="1.0" max="25.0" step="0.5" value="3.0">
+          <span class="field-hint">DC rated array capacity (PVDAQ System 10 = ~3.0 kW)</span>
+        </div>
+
+        <div class="config-field">
+          <label for="cfg-fixed-interval">
+            <span>Fixed Schedule Interval:</span>
+            <span class="cfg-display" id="disp-fixed-interval">45 Days</span>
+          </label>
+          <input type="range" class="styled-range" id="cfg-fixed-interval" min="15" max="90" step="5" value="45">
+          <span class="field-hint">Periodic washing cadence for Strategy C</span>
+        </div>
+
+        <div class="config-field">
+          <label for="cfg-clean-threshold">
+            <span>Decision Loss Threshold:</span>
+            <span class="cfg-display" id="disp-clean-thresh">7.5%</span>
+          </label>
+          <input type="range" class="styled-range" id="cfg-clean-threshold" min="3.0" max="15.0" step="0.5" value="7.5">
+          <span class="field-hint">Soiling loss level triggering manual cleaning</span>
+        </div>
+      </div>
+
+      <!-- Strategy Comparison 3-Column Grid -->
+      <div class="strategies-grid" id="strategies-grid">
+        <!-- Strategy A Card -->
+        <div class="strategy-card" id="card-strat-a">
+          <div class="strat-header">
+            <span class="strat-badge">Strategy A</span>
+            <h4>Clean Today</h4>
+          </div>
+          <p class="strat-action">Immediate manual wash on Day 1</p>
+          <div class="strat-metrics">
+            <div class="strat-metric-row">
+              <span class="lbl">Cleaning Cost:</span>
+              <span class="val" id="strat-a-cost">$150.00</span>
+            </div>
+            <div class="strat-metric-row">
+              <span class="lbl">Energy Loss:</span>
+              <span class="val" id="strat-a-loss">5.1 kWh</span>
+            </div>
+            <div class="strat-metric-row">
+              <span class="lbl">Recoverable Energy:</span>
+              <span class="val" id="strat-a-recov">8.1 kWh</span>
+            </div>
+            <div class="strat-metric-row highlight">
+              <span class="lbl">Net Financial Benefit:</span>
+              <span class="val" id="strat-a-net">-$148.78</span>
+            </div>
+          </div>
+          <p class="strat-desc" id="strat-a-desc">Immediate wash recovers soiling loss but incurs full manual cleaning fee.</p>
+        </div>
+
+        <!-- Strategy B Card -->
+        <div class="strategy-card recommended" id="card-strat-b">
+          <div class="strat-header">
+            <div class="strat-badge-wrap">
+              <span class="strat-badge">Strategy B</span>
+              <span class="badge-optimal" id="strat-b-opt-tag">OPTIMAL</span>
+            </div>
+            <h4>Wait for Forecast Rain</h4>
+          </div>
+          <p class="strat-action">Leverage upcoming natural wash-off</p>
+          <div class="strat-metrics">
+            <div class="strat-metric-row">
+              <span class="lbl">Cleaning Cost:</span>
+              <span class="val text-green" id="strat-b-cost">$0.00 (Free)</span>
+            </div>
+            <div class="strat-metric-row">
+              <span class="lbl">Forecast Rain:</span>
+              <span class="val text-cyan" id="strat-b-rain">3.2 mm</span>
+            </div>
+            <div class="strat-metric-row">
+              <span class="lbl">Energy Loss:</span>
+              <span class="val" id="strat-b-loss">5.9 kWh</span>
+            </div>
+            <div class="strat-metric-row">
+              <span class="lbl">Recoverable Energy:</span>
+              <span class="val" id="strat-b-recov">7.3 kWh</span>
+            </div>
+            <div class="strat-metric-row highlight">
+              <span class="lbl">Net Financial Benefit:</span>
+              <span class="val text-green" id="strat-b-net">+$1.10</span>
+            </div>
+          </div>
+          <p class="strat-desc" id="strat-b-desc">Zero cleaning cost. Free natural wash-off restores efficiency while saving manual washing fees.</p>
+        </div>
+
+        <!-- Strategy C Card -->
+        <div class="strategy-card" id="card-strat-c">
+          <div class="strat-header">
+            <span class="strat-badge">Strategy C</span>
+            <h4>Fixed Schedule</h4>
+          </div>
+          <p class="strat-action" id="strat-c-action">Clean every 45 days</p>
+          <div class="strat-metrics">
+            <div class="strat-metric-row">
+              <span class="lbl">Pro-Rated Cost (30d):</span>
+              <span class="val" id="strat-c-cost">$100.00</span>
+            </div>
+            <div class="strat-metric-row">
+              <span class="lbl">Energy Loss:</span>
+              <span class="val" id="strat-c-loss">5.2 kWh</span>
+            </div>
+            <div class="strat-metric-row">
+              <span class="lbl">Recoverable Energy:</span>
+              <span class="val" id="strat-c-recov">8.0 kWh</span>
+            </div>
+            <div class="strat-metric-row highlight">
+              <span class="lbl">Net Financial Benefit:</span>
+              <span class="val" id="strat-c-net">-$98.80</span>
+            </div>
+          </div>
+          <p class="strat-desc" id="strat-c-desc">Fixed periodic cadence maintains consistent array cleanliness but does not adapt to weather.</p>
+        </div>
+      </div>
+
+      <!-- Synthesis Banner -->
+      <div class="simulator-synthesis" id="simulator-synthesis-box">
+        <div class="synthesis-header">
+          <span class="synthesis-badge">Strategy Recommendation</span>
+          <span class="synthesis-title" id="synthesis-optimal-title">Selected Strategy: Strategy B — Wait for Forecast Rain</span>
+        </div>
+        <p class="synthesis-text" id="synthesis-optimal-text">
+          Strategy B (Wait for Forecast Rain) is the economically optimal decision. Upcoming rainfall of 3.2 mm provides free natural wash-off, avoiding a $150 service fee while yielding higher net financial return.
+        </p>
+      </div>
+    </section>
+
+    <!-- 6. WEATHER-AWARE DATA SCREENING & CONFOUNDER REDUCTION -->
+    <section class="card screening-section" id="screening-section">
+      <div class="card-header">
+        <div>
+          <h3>Weather-Aware Data Screening & Confounder Reduction</h3>
+          <p class="section-sub">Empirical screening of historical 1-minute POA variability and inferred snow confounders across 523,943 observations</p>
+        </div>
+        <div class="badge-neutral">
+          <span>Active Data Screening</span>
+        </div>
+      </div>
+
+      <!-- Explicit 3-Point Data Limitations Disclosure -->
+      <div class="analyzer-notice">
+        <span class="notice-icon">🛡️</span>
+        <div class="notice-text">
+          <strong>Data Limitations &amp; Methodology Disclosures:</strong>
+          <ul style="margin: 6px 0 0 16px; padding: 0; line-height: 1.5; font-size: 0.85rem;">
+            <li><strong>No Dedicated Optical Soiling Sensor:</strong> PVDAQ System 10 lacks optical soiling detectors. Ratios are model-estimated performance deviations (RdTools SRR proxy), not confirmed dust accumulation.</li>
+            <li><strong>No Direct Snow Depth Measurement:</strong> Weather dataset lacks snow depth; flagged events are inferred proxies (freezing precip / zero-gen proxy) and may also reflect hardware faults or data dropouts.</li>
+            <li><strong>Sub-Daily Forecast Cloud Dynamics:</strong> Historical 1-min POA enables empirical within-day stability analysis; future forecasts use Open-Meteo hourly/daily resolution without sub-minute cloud prediction.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Screening Metrics Grid -->
+      <div class="analyzer-kpi-grid">
+        <div class="analyzer-kpi-card kpi-positive">
+          <span class="kpi-label">Usable Baseline Days</span>
+          <span class="kpi-value" id="scr-usable-days">255</span>
+          <span class="kpi-sub">83.6% of recorded days</span>
+        </div>
+
+        <div class="analyzer-kpi-card kpi-negative">
+          <span class="kpi-label">Potential Snow Inferred</span>
+          <span class="kpi-value" id="scr-snow-days">41</span>
+          <span class="kpi-sub">Proxy: freezing precip / zero-gen</span>
+        </div>
+
+        <div class="analyzer-kpi-card kpi-neutral">
+          <span class="kpi-label">Low Irradiance Filter</span>
+          <span class="kpi-value" id="scr-low-irr-obs">47,064</span>
+          <span class="kpi-sub">POA &lt; 150 W/m&sup2; (twilight)</span>
+        </div>
+
+        <div class="analyzer-kpi-card kpi-neutral">
+          <span class="kpi-label">Cloud Instability Filter</span>
+          <span class="kpi-value" id="scr-cloud-obs">14,814</span>
+          <span class="kpi-sub">&Delta;POA &gt; 60 W/m&sup2;/min (1-min POA)</span>
+        </div>
+
+        <div class="analyzer-kpi-card kpi-positive">
+          <span class="kpi-label">Module Temperature</span>
+          <span class="kpi-value" id="scr-mod-temp">3 Sensors</span>
+          <span class="kpi-sub">99.0% direct sensor coverage</span>
+        </div>
+
+        <div class="analyzer-kpi-card kpi-positive">
+          <span class="kpi-label">Validation Error Gain</span>
+          <span class="kpi-value" id="scr-mae-gain">-0.146%</span>
+          <span class="kpi-sub">MAE reduced: 2.43% &rarr; 2.28%</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. HISTORICAL PV PERFORMANCE GRAPH -->
+    <section class="card historical-section">
+      <div class="card-header">
+        <div>
+          <h3>Historical Baseline Observations (2022 Full Year)</h3>
+          <p class="section-sub">Validated Colorado PVDAQ System 10 data &bull; NREL rdtools SRR Method</p>
+        </div>
+        <div class="chart-tab-group">
+          <button class="chart-tab active" data-chart="soiling" id="tab-soiling">Soiling & Wash Shifts</button>
+          <button class="chart-tab" data-chart="pi" id="tab-pi">Performance Index (PI)</button>
+        </div>
+      </div>
+
+      <div class="chart-wrapper">
+        <canvas id="historicalChart"></canvas>
+      </div>
+
+      <div class="chart-meta-footer">
+        <span id="chart-data-range">Data Range: 2022-01-01 to 2022-12-31 (304 Validated Days)</span>
+        <span class="legend-note">
+          <span class="dot gold"></span> Soiling Ratio
+          <span class="dot blue"></span> Precipitation (mm)
+          <span class="dot green"></span> Cleaning / Recovery Event
+        </span>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <span>SolarClean AI &bull; Operational Decision Support &bull; Scientific Baseline</span>
+      <span id="footer-build-info">NREL PVDAQ System 10 (Golden, Colorado, USA) &bull; Open-Meteo Live API</span>
+    </footer>
+
+  </div>
+
+  <!-- Load Dashboard Logic -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
