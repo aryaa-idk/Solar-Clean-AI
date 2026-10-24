@@ -15,11 +15,6 @@ DATA_DIR = os.path.join(OUTPUT_DIR, "data")
 DASHBOARD_DIR = os.path.join(BASE_DIR, "dashboard")
 os.makedirs(DASHBOARD_DIR, exist_ok=True)
 
-# 1. Load pipeline report
-report_path = os.path.join(OUTPUT_DIR, "pipeline_report.json")
-with open(report_path, "r", encoding="utf-8") as f:
-    report = json.load(f)
-
 # 2. Load CSV datasets
 daily_clean_path = os.path.join(DATA_DIR, "daily_clean_2022.csv")
 soiling_path = os.path.join(DATA_DIR, "soiling_estimation_2022.csv")
@@ -87,16 +82,18 @@ kpis = {
     "year": 2022,
     "capacity_kw": 3.0,
     "total_energy_kwh": round(float(df_merged['energy_kwh'].sum()), 1),
-    "annual_soiling_loss_pct": 2.71,
-    "soiling_ratio_p50": 0.9729,
-    "ci_soiling_loss": [1.42, 4.91],
-    "ci_soiling_ratio": [0.9509, 0.9858],
-    "cleaning_events_detected": 24,
-    "days_analyzed": len(df_merged),
-    "rain_days": int((df_merged['precipitation_sum'] > 0).sum()),
-    "total_precipitation_mm": round(float(df_merged['precipitation_sum'].sum()), 1),
-    "estimated_annual_loss_usd": 39.55,
-    "cleaning_cost_usd": 150.00,
+        "annual_soiling_loss_pct": round(float(df_merged['estimated_soiling_loss_pct'].dropna().mean()), 2),
+    "soiling_ratio_p50": round(float(df_merged['soiling_ratio'].dropna().median()), 4),
+    "ci_soiling_loss": [
+        round(float(df_merged['estimated_soiling_loss_pct'].dropna().quantile(0.05)), 2),
+        round(float(df_merged['estimated_soiling_loss_pct'].dropna().quantile(0.95)), 2)
+    ],
+    "ci_soiling_ratio": [
+        round(float(df_merged['soiling_ratio'].dropna().quantile(0.05)), 4),
+        round(float(df_merged['soiling_ratio'].dropna().quantile(0.95)), 4)
+    ],
+    "cleaning_events_detected": int(df_merged['is_cleaning_event'].sum()),
+    "estimated_annual_loss_usd": round(float(df_merged['energy_kwh'].sum()) * (df_merged['estimated_soiling_loss_pct'].dropna().mean() / 100.0) * 0.15, 2),,
     "recommendations_breakdown": {
         "no_action": int((df_recs['recommendation'] == 'no_action').sum()),
         "monitor": int((df_recs['recommendation'] == 'monitor').sum()),

@@ -19,39 +19,6 @@ PORT = int(os.environ.get("PORT", 8085))
 HOST = os.environ.get("HOST", "0.0.0.0")
 DASHBOARD_DIR = cfg.DASHBOARD_DIR
 
-class SolarCleanHandler(SimpleHTTPRequestHandler):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, directory=DASHBOARD_DIR, **kwargs)
-
-    def do_GET(self):
-        parsed = urllib.parse.urlparse(self.path)
-        path = parsed.path
-
-        if path == "/api/live-status":
-            self.send_json_response(self.handle_live_status())
-        elif path == "/api/historical":
-            self.send_json_response(self.handle_historical())
-        elif path == "/api/config":
-            self.send_json_response(cfg.get_config_dict())
-        else:
-            # Fall back to static dashboard files
-            super().do_GET()
-
-    def do_POST(self):
-        parsed = urllib.parse.urlparse(self.path)
-        if parsed.path == "/api/evaluate":
-            content_length = int(self.headers.get('Content-Length', 0))
-            post_data = self.rfile.read(content_length).decode('utf-8')
-            try:
-                overrides = json.loads(post_data) if post_data else {}
-            except Exception:
-                overrides = {}
-            
-            rec = evaluate_cleaning_decision(custom_overrides=overrides)
-            self.send_json_response(rec)
-        else:
-            self.send_error(404, "Endpoint not found")
-
 def get_live_status_data():
     """Fetch live weather and run recommendation engine."""
     weather = fetch_live_weather()

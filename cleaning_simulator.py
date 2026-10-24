@@ -44,9 +44,9 @@ def simulate_cleaning_strategies(
     if wash_cost_usd is None:
         wash_cost_usd = float(op_cfg.get("manual_wash_cost_usd", 150.0))
     if current_loss_pct is None:
-        current_loss_pct = 1.7 # Default Colorado baseline
+        current_loss_pct = float(op_cfg.get('monitor_loss_pct', 3.0))  # Config-driven baseline assumption
     if forecast_rain_mm is None:
-        forecast_rain_mm = 3.2 # From live weather
+        forecast_rain_mm = float(op_cfg.get('rain_wash_threshold_mm', 3.0))  # Config-driven rain threshold assumption
 
     # Baseline daily clean energy production
     daily_yield_factor = float(op_cfg.get("daily_yield_kwh_per_kw", 4.2))

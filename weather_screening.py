@@ -280,6 +280,9 @@ def load_or_compute_screening_summary():
     daily_clean_path = os.path.join(cfg.DATA_DIR, "daily_clean_2022.csv")
     weather_path = os.path.join(cfg.BASE_DIR, "weather_2022.csv")
 
+    # Fallback defaults — used only when source data files are missing.
+    # When files exist, screen_daily_dataset() computes real values and
+    # daily_stats.update(ds) replaces these placeholders.
     daily_stats = {
         "total_recorded_days": 305,
         "usable_clean_days": 255,
@@ -288,7 +291,8 @@ def load_or_compute_screening_summary():
         "low_coverage_days": 2,
         "usable_coverage_pct": 83.6,
         "module_temperature_direct_used": True,
-        "data_limitations": DATA_LIMITATIONS_RECORD
+        "data_limitations": DATA_LIMITATIONS_RECORD,
+        "_fallback_defaults": True
     }
 
     if os.path.exists(daily_clean_path) and os.path.exists(weather_path):

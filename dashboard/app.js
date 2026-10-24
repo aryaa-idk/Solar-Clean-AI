@@ -86,6 +86,34 @@ async function initDashboard() {
   if (rainfallAnalysis) {
     rainfallDataCache = rainfallAnalysis;
     renderRainfallAnalyzer(rainfallAnalysis);
+  } else {
+    // No rainfall data available — show empty/error state so section is not silently blank
+    const canvas = document.getElementById('rainfallComparisonChart');
+    if (canvas) {
+      canvas.style.display = 'none';
+      const wrapper = canvas.parentElement;
+      if (wrapper) {
+        let emptyMsg = wrapper.querySelector('.rainfall-empty-state');
+        if (!emptyMsg) {
+          emptyMsg = document.createElement('p');
+          emptyMsg.className = 'rainfall-empty-state';
+          wrapper.appendChild(emptyMsg);
+        }
+        emptyMsg.textContent = 'Rainfall analysis data unavailable. Unable to connect to weather analysis service.';
+        emptyMsg.style.textAlign = 'center';
+        emptyMsg.style.color = 'var(--text-muted)';
+        emptyMsg.style.paddingTop = '60px';
+      }
+    }
+    const tbody = document.getElementById('rainfall-table-body');
+    if (tbody) {
+      tbody.innerHTML = '<tr><td colspan="6" class="text-center">Rainfall analysis data unavailable.</td></tr>';
+    }
+    // Zero out KPI counters
+    ['ra-total-events', 'ra-comparable-events', 'ra-increased-events', 'ra-decreased-events', 'ra-neutral-events', 'ra-mean-pi'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = '—';
+    });
   }
 
   // 4. Load What-If Simulator data
@@ -392,58 +420,140 @@ function renderRainfallAnalyzer(data) {
 
   // Populate events table
   const tbody = document.getElementById('rainfall-table-body');
+
+  // Normalize event field names to match renderer expectations.
+  // Backend/static data uses: start_date, precipitation_total_mm, outcome (no is_comparable).
+  const normalizedEvents = events.map(ev => ({
+    event_date: ev.start_date || ev.event_date,
+    precipitation_mm: ev.precipitation_total_mm !== undefined ? ev.precipitation_total_mm : ev.precipitation_mm,
+    pre_event_pi: ev.pre_event_pi,
+    post_event_pi: ev.post_event_pi,
+    delta_pi: ev.delta_pi,
+    is_comparable: ev.delta_pi !== null && ev.delta_pi !== undefined,
+    classification: ev.outcome ? ev.outcome.toUpperCase() : ev.classification,
+    status: ev.status
+  }));
+
+  const comparableEvents = normalizedEvents.filter(e => e.is_comparable);
+
+  // Populate events table with normalized data
   if (tbody) {
     tbody.innerHTML = '';
-    events.forEach(ev => {
-      const tr = document.createElement('tr');
+    if (events.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" class="text-center">No rainfall events found in the dataset.</td></tr>';
+    } else {
+      events.forEach(ev => {
+        const preStr = ev.pre_event_pi !== null && ev.pre_event_pi !== undefined ? ev.pre_event_pi.toFixed(3) : 'N/A';
+        const postStr = ev.post_event_pi !== null && ev.post_event_pi !== undefined ? ev.post_event_pi.toFixed(3) : 'N/A';
+        const deltaStr = ev.delta_pi !== null && ev.delta_pi !== undefined ? (ev.delta_pi >= 0 ? '+' : '') + ev.delta_pi.toFixed(3) : 'Inconclusive';
 
-      const preStr = ev.pre_event_pi !== null ? ev.pre_event_pi.toFixed(3) : 'N/A';
-      const postStr = ev.post_event_pi !== null ? ev.post_event_pi.toFixed(3) : 'N/A';
-      const deltaStr = ev.delta_pi !== null ? (ev.delta_pi >= 0 ? '+' : '') + ev.delta_pi.toFixed(3) : 'Inconclusive';
+        let badgeClass = 'neutral';
+        let badgeLabel = 'Neutral';
+        const outcome = (ev.outcome || '').toLowerCase();
 
-      let badgeClass = 'neutral';
-      let badgeLabel = 'Neutral';
+        if (!ev.is_comparable && ev.is_comparable !== undefined) {
+          badgeClass = 'inconclusive';
+          badgeLabel = 'Inconclusive (Data Gap)';
+        } else if (outcome === 'increased') {
+          badgeClass = 'increased';
+          badgeLabel = 'Performance Increased';
+        } else if (outcome === 'decreased') {
+          badgeClass = 'decreased';
+          badgeLabel = 'Performance Decreased';
+        } else if (outcome === 'neutral') {
+          badgeClass = 'neutral';
+          badgeLabel = 'Minimal / Neutral Change';
+        } else if (outcome === 'inconclusive') {
+          badgeClass = 'inconclusive';
+          badgeLabel = 'Inconclusive (Data Gap)';
+        }
 
-      if (!ev.is_comparable) {
-        badgeClass = 'inconclusive';
-        badgeLabel = 'Inconclusive (Data Gap)';
-      } else if (ev.classification === 'INCREASED') {
-        badgeClass = 'increased';
-        badgeLabel = 'Performance Increased';
-      } else if (ev.classification === 'DECREASED') {
-        badgeClass = 'decreased';
-        badgeLabel = 'Performance Decreased';
-      } else {
-        badgeClass = 'neutral';
-        badgeLabel = 'Minimal / Neutral Change';
-      }
+        const eventDate = ev.start_date || ev.event_date || 'Unknown';
+        const precipMm = ev.precipitation_total_mm !== undefined ? ev.precipitation_total_mm : ev.precipitation_mm;
+        const precipStr = precipMm !== undefined && precipMm !== null ? precipMm.toFixed(1) + ' mm' : 'N/A';
 
-      tr.innerHTML = `
-        <td>${ev.event_date}</td>
-        <td><strong>${ev.precipitation_mm.toFixed(1)} mm</strong></td>
-        <td>${preStr}</td>
-        <td>${postStr}</td>
-        <td><span class="${ev.delta_pi > 0 ? 'text-green' : (ev.delta_pi < 0 ? 'text-rose' : '')}">${deltaStr}</span></td>
-        <td><span class="status-badge ${badgeClass}">${badgeLabel}</span></td>
-      `;
-      tbody.appendChild(tr);
-    });
+        tr.innerHTML = `
+          <td>${eventDate}</td>
+          <td><strong>${precipStr}</strong></td>
+          <td>${preStr}</td>
+          <td>${postStr}</td>
+          <td><span class="${ev.delta_pi > 0 ? 'text-green' : (ev.delta_pi < 0 ? 'text-rose' : '')}">${deltaStr}</span></td>
+          <td><span class="status-badge ${badgeClass}">${badgeLabel}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
   }
 
   // Render Rainfall Comparison Bar Chart (Top 14 representative rainfall events)
-  renderRainfallComparisonChart(events.filter(e => e.is_comparable).slice(0, 14));
+  // Show empty-state message if no comparable events are available.
+  if (comparableEvents.length === 0) {
+    const canvas = document.getElementById('rainfallComparisonChart');
+    if (canvas) {
+      canvas.style.display = 'none';
+      const wrapper = canvas.parentElement;
+      if (wrapper) {
+        let emptyMsg = wrapper.querySelector('.rainfall-empty-state');
+        if (!emptyMsg) {
+          emptyMsg = document.createElement('p');
+          emptyMsg.className = 'rainfall-empty-state';
+          wrapper.appendChild(emptyMsg);
+        }
+        emptyMsg.textContent = 'No comparable rainfall events available for charting.';
+        emptyMsg.style.textAlign = 'center';
+        emptyMsg.style.color = 'var(--text-muted)';
+        emptyMsg.style.paddingTop = '60px';
+      }
+    }
+  } else {
+    const canvas = document.getElementById('rainfallComparisonChart');
+    if (canvas) {
+      canvas.style.display = 'block';
+      const wrapper = canvas.parentElement;
+      if (wrapper) {
+        const emptyMsg = wrapper.querySelector('.rainfall-empty-state');
+        if (emptyMsg) emptyMsg.remove();
+      }
+    }
+    renderRainfallComparisonChart(comparableEvents.slice(0, 14));
+  }
 }
 
 function renderRainfallComparisonChart(comparableEvents) {
   const canvas = document.getElementById('rainfallComparisonChart');
   if (!canvas || !window.Chart) return;
 
+  if (!comparableEvents || comparableEvents.length === 0) {
+    canvas.style.display = 'none';
+    const wrapper = canvas.parentElement;
+    if (wrapper) {
+      let emptyMsg = wrapper.querySelector('.rainfall-empty-state');
+      if (!emptyMsg) {
+        emptyMsg = document.createElement('p');
+        emptyMsg.className = 'rainfall-empty-state';
+        wrapper.appendChild(emptyMsg);
+      }
+      emptyMsg.textContent = 'No comparable rainfall events available for charting.';
+      emptyMsg.style.textAlign = 'center';
+      emptyMsg.style.color = 'var(--text-muted)';
+      emptyMsg.style.paddingTop = '60px';
+    }
+    return;
+  }
+
+  canvas.style.display = 'block';
+  const wrapper = canvas.parentElement;
+  if (wrapper) {
+    const emptyMsg = wrapper.querySelector('.rainfall-empty-state');
+    if (emptyMsg) emptyMsg.remove();
+  }
+
   const ctx = canvas.getContext('2d');
   if (rainfallChartInstance) {
     rainfallChartInstance.destroy();
   }
 
-  const labels = comparableEvents.map(e => `${formatDateShort(e.event_date)} (${e.precipitation_mm}mm)`);
+  const labels = comparableEvents.map(e => `${formatDateShort(e.event_date)} (${(e.precipitation_mm || 0).toFixed(1)}mm)`);
   const deltas = comparableEvents.map(e => e.delta_pi);
   const colors = deltas.map(d => d >= 0 ? 'rgba(16, 185, 129, 0.75)' : 'rgba(244, 63, 94, 0.75)');
   const borderColors = deltas.map(d => d >= 0 ? '#10B981' : '#F43F5E');
@@ -453,7 +563,7 @@ function renderRainfallComparisonChart(comparableEvents) {
     data: {
       labels: labels,
       datasets: [{
-        label: 'Historical Performance Index Change (ΔPI)',
+        label: 'ΔPI Change After Rainfall Event',
         data: deltas,
         backgroundColor: colors,
         borderColor: borderColors,
@@ -465,7 +575,13 @@ function renderRainfallComparisonChart(comparableEvents) {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { display: false },
+        legend: {
+          display: true,
+          labels: {
+            color: '#94A3B8',
+            font: { family: 'Plus Jakarta Sans', size: 11 }
+          }
+        },
         tooltip: {
           backgroundColor: 'rgba(15, 23, 42, 0.95)',
           titleColor: '#F8FAFC',
@@ -707,6 +823,23 @@ function initConfigSliders() {
     if (inp) inp.addEventListener(sStrategy === inp ? 'change' : 'input', handleConfigChange);
   });
 
+  // Strategy card click handlers — clicking A/B/C selects that strategy
+  ['A', 'B', 'C'].forEach(stratId => {
+    const card = document.getElementById(`card-strat-${stratId.toLowerCase()}`);
+    if (card) {
+      card.addEventListener('click', () => {
+        if (sStrategy) {
+          sStrategy.value = stratId;
+          dStrategy.textContent = `Strategy ${stratId}`;
+          activeConfig.strategy = stratId;
+          handleConfigChange();
+        }
+      });
+      // Add cursor pointer styling via class
+      card.classList.add('strategy-clickable');
+    }
+  });
+
   if (btnReset) {
     btnReset.addEventListener('click', () => {
       sWash.value = 150;
@@ -734,9 +867,10 @@ function initChartTabs() {
       tabs.forEach(t => t.classList.remove('active'));
       e.target.classList.add('active');
       currentChartMode = e.target.dataset.chart;
-      if (historicalDataCache) {
-        renderHistoricalChart(historicalDataCache, currentChartMode);
-      }
+      // Always re-render the historical chart when a tab is clicked,
+      // even if the data cache is not yet populated — the render function
+      // will handle missing data gracefully and update the mode.
+      renderHistoricalChart(historicalDataCache, currentChartMode);
     });
   });
 }
@@ -744,6 +878,12 @@ function initChartTabs() {
 function renderHistoricalChart(records, mode) {
   const canvas = document.getElementById('historicalChart');
   if (!canvas || !window.Chart) return;
+  if (!records || records.length === 0) {
+    // Clear the canvas if there's no data to display
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    return;
+  }
 
   const ctx = canvas.getContext('2d');
   if (currentChartInstance) {
